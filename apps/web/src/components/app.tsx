@@ -969,29 +969,47 @@ function DashboardBody({ id }: { id: string }) {
               <YouTubeAnalytics key={v.id} versionId={v.id} projectId={id} />
             </section>
           </div>
-          {project.slug === "winner-signal-19daa4" && <section className="panel" aria-labelledby="mock-trace-heading">
+          {project.slug === "winner-signal-19daa4" && <section className="panel" aria-labelledby="build-backtrace-heading">
             <div className="section-heading">
-              <div><h2 id="mock-trace-heading">From video activity to agent actions</h2><p>A worked example of the evidence connection.</p></div>
-              <span className="pill">Mock example · synthetic</span>
+              <div><h2 id="build-backtrace-heading">This demo → our build trajectory</h2><p>Recorded decisions, implementation, failures, and follow-up fixes.</p></div>
+              <span className="pill">Actual project history · curated</span>
             </div>
-            <p className="notice">Fictional follow-up demo and trace, not results from your uploaded video or session. These values are never saved as real evidence.</p>
-            <div className="metrics">
-              <div><span>Sample video views</span><strong>24</strong></div>
-              <div><span>Sample average watched</span><strong>75%</strong></div>
-              <div><span>Sample video length</span><strong>40s</strong></div>
-            </div>
-            <div style={{overflowX: "auto"}}>
-              <table>
-                <thead><tr><th>Video evidence</th><th>Agent trace</th><th>Implementation evidence</th></tr></thead>
-                <tbody>
-                  <tr><td><strong>00:08–00:14</strong><br />Viewer sees a demo link saved.</td><td><strong>Human → agent</strong><br />“Accept a YouTube URL without requiring a second upload.”</td><td>Illustrative change: URL validation and a version record containing the original video link.</td></tr>
-                  <tr><td><strong>00:15–00:27</strong><br />A review opens with timestamped claims and code references.</td><td><strong>Agent → tool</strong><br />Implement media review and validate returned file paths, line ranges, and timestamps.</td><td>Illustrative test result: invalid citations rejected; valid references retained. Reported by the trace, not independently replayed.</td></tr>
-                  <tr><td><strong>00:28–00:40</strong><br />An expandable finding shows the build action behind a claim.</td><td><strong>Agent → revision</strong><br />Add exact trace quotations and distinguish agent work from human instructions.</td><td>Illustrative link: video claim → source excerpt → quoted build action → reported test outcome.</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <p><strong>What the sample activity tells us:</strong> 75% of a 40-second video is a 30-second average view. It does not reveal which viewers reached a particular segment or why they watched.</p>
-            <p><strong>What to evaluate next:</strong> Replay the cited behavior and test the code change. Compare later versions under comparable exposure before attributing audience response to an agent action.</p>
+            <p>The video is pinned to <a href="https://github.com/LEE-CHENYU/winner-signal/tree/6f8aeb1c2c1d6abd42dabf457c4f7dbdac12fd95" target="_blank" rel="noreferrer">6f8aeb1</a>. Video times below come from the live Gemini review of the uploaded recording. History excerpts are selected from this project’s Codex session; they are not a complete replay.</p>
+            <article className="claim">
+              <div className="row"><a className="timestamp" href="https://youtu.be/m-gMjoL5yew?t=0" target="_blank" rel="noreferrer">00:00–00:31 · landing page</a><span className="pill">Visible in recording</span></div>
+              <h3>Research goal and descending landscape</h3>
+              <p>The recorded page follows the earlier requests to foreground real-world AI signals, use grey square-edged styling, and make the landscape descend.</p>
+              <p><a href="https://github.com/LEE-CHENYU/winner-signal/blob/6f8aeb1c2c1d6abd42dabf457c4f7dbdac12fd95/apps/web/src/components/app.tsx" target="_blank" rel="noreferrer">Pinned landing-page implementation ↗</a></p>
+              <details><summary>Recorded build checkpoint · 23:01:24 UTC</summary><blockquote>Live: Geist Sans, lighter headlines, grey palette, square corners, and an animation descending into a basin.</blockquote><p>Assistant status report, 2026-10-25. The recording visually supports the landing-page result; this is not an execution test of the backend.</p></details>
+            </article>
+            <article className="claim">
+              <div className="row"><a className="timestamp" href="https://youtu.be/m-gMjoL5yew?t=6" target="_blank" rel="noreferrer">00:06–00:13.5 · Gemini reviews video + code</a><span className="pill">Narrated claim + implementation</span></div>
+              <h3>A missing URL path became a working review pipeline</h3>
+              <p>22:54 UTC: the audit found that new YouTube links could not trigger review. The agent added uploader/public-video checks and remote video input. At 22:59:10 UTC the recorded test output reported <strong>33 passed, 1 warning</strong>. A separate public-sample URL probe then succeeded.</p>
+              <p><a href="https://github.com/LEE-CHENYU/winner-signal/blob/6f8aeb1c2c1d6abd42dabf457c4f7dbdac12fd95/services/analysis/analysis/gemini_analyzer.py#L97" target="_blank" rel="noreferrer">Pinned media review code ↗</a> · <a href="https://github.com/LEE-CHENYU/winner-signal/blob/6f8aeb1c2c1d6abd42dabf457c4f7dbdac12fd95/services/analysis/tests/test_linked_review.py" target="_blank" rel="noreferrer">Linked-review integration tests ↗</a></p>
+              <details><summary>Recorded gap · 22:54:34 UTC</summary><blockquote>Gemini code review still requires an existing uploaded video asset—it doesn’t run on a new YouTube link yet.</blockquote><p>Assistant report from the original build session. The later integration test used a stubbed model; the live URL probe used Google’s public sample, not this recording.</p></details>
+            </article>
+            <article className="claim">
+              <div className="row"><a className="timestamp" href="https://youtu.be/m-gMjoL5yew?t=13" target="_blank" rel="noreferrer">00:13.5–00:17.5 · claims compared with code</a><span className="pill">Code-supported; not shown running</span></div>
+              <h3>Claims have timestamps and checked source references</h3>
+              <p>The pinned validator rejects out-of-range video times and nonexistent source lines, constructs commit-specific links, and distinguishes visible observations from assertions. The demo narrates this capability but does not open a result.</p>
+              <p><a href="https://github.com/LEE-CHENYU/winner-signal/blob/6f8aeb1c2c1d6abd42dabf457c4f7dbdac12fd95/services/analysis/analysis/gemini_analyzer.py#L45-L87" target="_blank" rel="noreferrer">Exact validator at the recorded revision ↗</a></p>
+            </article>
+            <article className="claim">
+              <div className="row"><a className="timestamp" href="https://youtu.be/m-gMjoL5yew?t=17" target="_blank" rel="noreferrer">00:17.5–00:21 · audience response</a><span className="pill">Integration built; verification came later</span></div>
+              <h3>Account connection was repaired before real reports were fetched</h3>
+              <p>Recorded OAuth test output: <strong>3 failed, 23 passed</strong> at 22:49:11 UTC, followed by <strong>26 passed</strong> at 22:49:24 UTC. The same-account connection and separate-uploader fallback were then deployed. Real owner-authorized report retrieval was verified later, after this video was uploaded.</p>
+              <p><a href="https://github.com/LEE-CHENYU/winner-signal/blob/6f8aeb1c2c1d6abd42dabf457c4f7dbdac12fd95/services/analysis/analysis/google_oauth.py" target="_blank" rel="noreferrer">Pinned OAuth implementation ↗</a> · <a href="https://github.com/LEE-CHENYU/winner-signal/blob/6f8aeb1c2c1d6abd42dabf457c4f7dbdac12fd95/services/analysis/analysis/youtube.py" target="_blank" rel="noreferrer">Video-scoped reports ↗</a></p>
+            </article>
+            <article className="claim">
+              <div className="row"><span className="timestamp">After recording · 23:32–23:35 UTC</span><span className="pill">Later improvement</span></div>
+              <h3>From history as context to cited agent actions</h3>
+              <blockquote>what&apos;s important is video understanding and codebase and agent traces understanding make sure these are build</blockquote>
+              <p>This human request at 23:32:12 UTC prompted an audit: history was only background text. Commit <a href="https://github.com/LEE-CHENYU/winner-signal/commit/698857b" target="_blank" rel="noreferrer">698857b</a> added structured actor/action/outcome findings and exact trace quotations.</p>
+              <p>The first combined live run failed JSON parsing. After tightening the response, run <code>3772f476</code> succeeded at 23:35:35 UTC with <strong>5 video claims, 6 trace findings, and a verified evidence seal</strong>. It used this recording as an uploaded file, pinned code, and a curated build excerpt. The private receipt is retained locally.</p>
+              <p><a href="https://github.com/LEE-CHENYU/winner-signal/commit/b53f633" target="_blank" rel="noreferrer">Follow-up response-size and failure-diagnostic fix ↗</a></p>
+            </article>
+            <p className="notice">The recording ends after “let me show you an example” (00:27.5–00:31). It does not show the review result. This backtrace connects recorded claims to build evidence; it does not establish that an agent action caused audience response.</p>
           </section>}
           <section className="panel">
             <h2>Private evidence review</h2>
