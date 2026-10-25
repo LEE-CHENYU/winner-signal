@@ -467,6 +467,11 @@ function SubmissionForm({ projectId }: { projectId?: string }) {
           Live app link <span>Optional</span>
           <input name="live" type="url" placeholder="https://…" />
         </label>
+        <aside className="notice">
+          <strong>Prompts &amp; agent session history <span className="muted">Optional</span></strong>
+          <p>After saving your draft, open <strong>Private evidence review → Optional build history</strong> in your workspace. Copy the export prompt into your coding agent to find and export this project’s session, then upload JSON, JSONL, Markdown, or text.</p>
+          <p>Your export can include the prompts, edits, tool results, and tests behind the build. Review it for secrets before uploading. History stays private and is included in a Gemini review only when you choose.</p>
+        </aside>
         <ErrorBox error={error} />
         <button disabled={busy}>{busy ? stage : "Save private draft"}</button>
       </form>
