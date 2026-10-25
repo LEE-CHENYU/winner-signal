@@ -39,14 +39,19 @@ async def snapshot(url):
             for r in tree.get("tree", [])
             if r.get("type") == "blob"
             and r.get("mode") == "100644"
-            and r.get("size", 0) <= 30000
+            and r.get("size", 0) <= 1000000
             and re.search(r"\.(py|tsx?|jsx?|md|sql)$", r["path"])
             and not any(
                 part.startswith(".") or part in ("node_modules", "vendor", "session-history")
                 for part in r["path"].split("/")
             )
         ]
-        candidates.sort(key=lambda r: (r["path"].lower().endswith(".md"), r["path"]))
+        def priority(row):
+            path = row["path"].lower()
+            incidental = any(part in ("tests", "scripts", "fixtures", "docs") for part in path.split("/"))
+            core = any(term in path for term in ("analy", "history", "trace", "main.", "app.tsx", "server.", "agent"))
+            return (incidental, path.endswith(".md"), not core, path)
+        candidates.sort(key=priority)
         for row in candidates[:16]:
             path = row["path"]
             if ".." in path.split("/"):
@@ -54,20 +59,24 @@ async def snapshot(url):
             r = await client.get(
                 f"https://raw.githubusercontent.com/{repo}/{commit}/{quote(path, safe='/')}"
             )
-            if r.status_code != 200 or len(r.content) > 30000:
+            if r.status_code != 200 or len(r.content) > 1000000:
                 continue
             try:
-                text = r.content.decode("utf-8")
+                full_text = r.content.decode("utf-8")
+                excerpt = r.content[:min(20000, 160000 - total)].decode("utf-8", errors="ignore")
+                text = excerpt.rsplit("\n", 1)[0] if len(excerpt) < len(full_text) else excerpt
             except UnicodeDecodeError:
                 continue
-            if total + len(r.content) > 160000:
+            if not text:
                 break
-            files[path] = {"text": text, "sha256": hashlib.sha256(r.content).hexdigest()}
-            total += len(r.content)
+            files[path] = {"text": text, "sha256": hashlib.sha256(r.content).hexdigest(), "truncated": text != full_text, "full_bytes": len(r.content)}
+            total += len(text.encode())
     return {
         "repository_url": "https://github.com/" + repo,
         "commit_sha": commit,
         "files": files,
-        "coverage": f"{len(files)} source files; bounded snapshot, not full repository",
+        "coverage": f"{len(files)} source files; bounded snapshot with up to 20KB prefix per file, not full repository",
         "tree_truncated": bool(tree.get("truncated")),
+        "omitted_files": len(candidates) - len(files),
+        "truncated_files": [p for p, f in files.items() if f["truncated"]],
     }

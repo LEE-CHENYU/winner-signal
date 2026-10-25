@@ -84,6 +84,13 @@ export type Review = {
   };
   result: null | {
     summary: string;
+    trace_status?: string;
+    trace_findings?: {
+      artifact_id: string; quote: string; actor: string; action: string;
+      outcome: string; outcome_status: string; assessment: string;
+      start_char: number; end_char: number; artifact_sha256: string;
+      evidence: {file_path: string; start_line: number; end_line: number; url: string; relation: string; explanation: string}[];
+    }[];
     limitations: string[];
     claims: {
       text: string;

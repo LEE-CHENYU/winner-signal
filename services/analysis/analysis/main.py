@@ -850,8 +850,8 @@ async def analyze(vid: str, request: Request):
                 attempt,
                 os.getenv("GEMINI_MODEL", "gemini-4-argon"),
                 int(body.get("include_history") is True),
-                "1",
-                "1",
+                "2",
+                "2",
             ),
         )
     return {"run_id": rid, "status": "queued"}

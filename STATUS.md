@@ -107,3 +107,12 @@ Deployment verified: backend deployment-01M5TMN1GMJ9TPS4AD628YRZVJ passed Fly he
 ## GitHub publication
 
 Published the application source at https://github.com/LEE-CHENYU/winner-signal on main. Runtime data, credentials, session-history exports, virtual environments and build caches are excluded. The staged source passed exact configured-secret and credential-pattern scans; AERead license and provenance are included. Public demo-video submission remains outstanding.
+
+## 2026-10-25 — multimodal understanding audit
+
+- Video review sends actual video media to Gemini and validates claim timestamps and visual/audio modality.
+- Code review reads commit-pinned source excerpts and validates exact file/line citations; submitted code is never executed.
+- Fixed large-file omission: up to 20KB prefixes from implementation files are included within the existing 160KB total bound. Truncated/omitted coverage is recorded.
+- Added structured agent trace findings: actor, action, reported outcome, assessment, exact history quotation, artifact hash/character offsets, and validated source citations. Unsupported trace quotes are rejected. Missing histories do not incur a penalty.
+- Private review UI now displays trace findings separately. Participant-supplied traces do not establish independent execution or causal attribution.
+- Automated checks: backend suite 35 passed before repository coverage test; added coverage test and trace tests pass (3). Frontend lint and production build passed.

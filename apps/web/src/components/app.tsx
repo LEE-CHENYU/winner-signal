@@ -1136,6 +1136,18 @@ function DashboardBody({ id }: { id: string }) {
                         ))}
                       </article>
                     ))}
+                    <h3>Agent build trace</h3>
+                    <p>Participant-supplied records. These show reported actions and outcomes, not independently verified execution.</p>
+                    {!review.result.trace_findings?.length && <p>{review.result.trace_status === "no_supported_findings" ? "No trace findings with valid supporting excerpts were returned." : "No agent trace findings are available for this review. Upload build history and include it in a new review to assess the building process."}</p>}
+                    {review.result.trace_findings?.map((t, i) => (
+                      <article className="claim" key={i}>
+                        <div className="row"><span className="pill">{t.actor}</span><span>{t.outcome_status.replaceAll("_", " ")}</span></div>
+                        <h4>{t.action}</h4>
+                        <p>{t.outcome}</p><p>{t.assessment}</p>
+                        <details><summary>Trace evidence · {t.artifact_id.slice(0, 8)} · characters {t.start_char}–{t.end_char}</summary><blockquote style={{whiteSpace: "pre-wrap"}}>{t.quote}</blockquote><p>Artifact SHA-256: <code>{t.artifact_sha256}</code></p></details>
+                        {t.evidence.map((e, j) => <div className="source" key={j}><a href={e.url} target="_blank" rel="noreferrer">{e.file_path}:{e.start_line}–{e.end_line} ↗</a><span>{e.relation}</span><p>{e.explanation}</p></div>)}
+                      </article>
+                    ))}
                     <h3>Make the next version stronger</h3>
                     {review.result.improvements.map((r, i) => (
                       <article className="recommendation" key={i}>
