@@ -103,3 +103,7 @@ Reversed the optimization animation to descend. Added a public YouTube URL path 
 Still needs user input: our actual public YouTube demo URL and uploader grant for real report retrieval, and a public project GitHub URL. No real audience counts, training improvements or event eligibility are claimed.
 
 Deployment verified: backend deployment-01M5TMN1GMJ9TPS4AD628YRZVJ passed Fly health checks; production /api/health returns 200 with analysis_configured=true. Latest frontend dpl_HKRWQwSQpV1xJ1cuoXoETqNay3g8 includes the descending basin animation and self-hosted Geist Sans. Browser computed style confirms Geist at headline weight 550; grey styling and square corners remain. No private YouTube consent was granted during verification.
+
+## GitHub publication
+
+Published the application source at https://github.com/LEE-CHENYU/winner-signal on main. Runtime data, credentials, session-history exports, virtual environments and build caches are excluded. The staged source passed exact configured-secret and credential-pattern scans; AERead license and provenance are included. Public demo-video submission remains outstanding.

@@ -2,7 +2,7 @@
 
 Event: Gemini 4 Argon SF Hackathon · October 25, 2026
 
-**Draft status:** Deployed prototype at https://winner-signal.vercel.app. Link-first gallery, feedback, repository snapshots, optional history ingestion and a YouTube analytics connector are implemented. Real participant YouTube reports and training gains have not been demonstrated. Gemini video-to-code review was tested on a controlled uploaded clip; a public YouTube URL review path is now implemented and tested; a live Gemini URL probe succeeded on Google’s public example, while our own linked-demo run remains to be verified. Repository and demo-video links remain to be filled. Nothing has been submitted.
+**Draft status:** Deployed prototype at https://winner-signal.vercel.app. Link-first gallery, feedback, repository snapshots, optional history ingestion and a YouTube analytics connector are implemented. Real participant YouTube reports and training gains have not been demonstrated. Gemini video-to-code review was tested on a controlled uploaded clip; a public YouTube URL review path is now implemented and tested; a live Gemini URL probe succeeded on Google’s public example, while our own linked-demo run remains to be verified. Public repository: https://github.com/LEE-CHENYU/winner-signal. The demo-video link remains to be filled. Nothing has been submitted.
 
 ## Team Name*
 
