@@ -16,6 +16,7 @@ from google.oauth2.credentials import Credentials
 from .auth import identity, own_version
 from .google_oauth import YOUTUBE_SCOPES
 from .storage import db
+from .reporting import today_window
 
 router = APIRouter()
 
@@ -132,12 +133,14 @@ def analytics(vid: str, request: Request):
             "SELECT * FROM youtube_reports WHERE user_id=? AND video_id=? AND channel_id=?",
             (user["id"], video, conn["channel_id"]),
         ).fetchone()
-    if cached and cached["fetched_at"] > time.time() - 6 * 3600:
-        return json.loads(cached["report_json"])
+    today, _, _ = today_window()
+    if cached and cached["fetched_at"] > time.time() - 30:
+        cached_report = json.loads(cached["report_json"])
+        if cached_report.get("period_start") == today and cached_report.get("period_end") == today:
+            return cached_report
     try:
         token = access_token(conn)
-        end = datetime.now(timezone.utc).date()
-        start = end - timedelta(days=28)
+        start = end = today
         with httpx.Client(timeout=20) as client:
             items = get(client, "videos", {"part": "snippet", "id": video}, token).get("items", [])
             if not items or items[0]["snippet"]["channelId"] != conn["channel_id"]:
@@ -159,7 +162,9 @@ def analytics(vid: str, request: Request):
             )
         names = [h["name"] for h in report.get("columnHeaders", [])]
         rows = [dict(zip(names, row)) for row in report.get("rows", [])]
+        rows = [row for row in rows if row.get("day") == today]
         payload = {
+            "timezone": "America/Los_Angeles",
             "status": "connected" if rows else "pending_data",
             "source": "youtube_oauth",
             "video_id": video,

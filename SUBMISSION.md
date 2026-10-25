@@ -2,7 +2,7 @@
 
 Event: Gemini 4 Argon SF Hackathon · October 25, 2026
 
-**Draft status:** Deployed prototype at https://winner-signal.vercel.app. Link-first gallery, feedback, repository snapshots, optional history ingestion and a YouTube analytics connector are implemented. Real participant YouTube reports and training gains have not been demonstrated. Gemini video-to-code review was tested on a controlled uploaded clip; a public YouTube URL review path is now implemented and tested; a live Gemini URL probe succeeded on Google’s public example, while our own linked-demo run remains to be verified. Public repository: https://github.com/LEE-CHENYU/winner-signal. The demo-video link remains to be filled. Nothing has been submitted.
+**Draft status:** Deployed prototype at https://winner-signal.vercel.app. Link-first gallery, feedback, repository snapshots, optional history ingestion and a YouTube analytics connector are implemented. Owner-authorized YouTube API retrieval has been verified; today’s reports may still be pending. Training gains have not been demonstrated. Gemini video-to-code review was tested on a controlled uploaded clip; a public YouTube URL review path is now implemented and tested; a live Gemini URL probe succeeded on Google’s public example, while an updated live review of our own uploaded demo, pinned code and a curated build-history excerpt succeeded with five video claims, six cited trace findings, and a verified evidence seal. The own-demo YouTube-URL review is still not separately verified. Public repository: https://github.com/LEE-CHENYU/winner-signal. Demo video: https://youtu.be/m-gMjoL5yew. The official hackathon form has not been submitted.
 
 ## Team Name*
 
@@ -36,7 +36,7 @@ Before submitting: verify the repository is public and contains the actual build
 
 ## 1-Minute Demo Video*
 
-[INSERT ACCESSIBLE DEMO VIDEO URL]
+https://youtu.be/m-gMjoL5yew
 
 Before submitting: verify playback while signed out and keep the video within the form's one-minute requirement. Show the actual implemented workflow; label any fixture data or simulated outputs.
 
@@ -46,7 +46,7 @@ We use Gemini 4 Argon (`gemini-4-argon`) through the Google Gen AI Python SDK an
 
 The pipeline uses the Files API, token counting, bounded generation, JSON output and local validation. Source-line and timestamp bounds are checked, and artifacts are sealed using a reused, pinned AERead evidence layer. A live review and queued worker review were verified on a controlled test clip. These checks establish integration, not accuracy across arbitrary projects or usefulness as a training reward.
 
-We use Google sign-in and the YouTube Data and Analytics APIs to connect a builder's authorized channel with a specific demo. Sign-in requests optional read-only YouTube permission and connects the same account when granted; builders can connect a different uploader account if needed. The connector supports private video-level reports including views, watch time and average viewing duration. The OAuth app remains in Testing mode, and real participant report retrieval is not yet validated.
+We use Google sign-in and the YouTube Data and Analytics APIs to connect a builder's authorized channel with a specific demo. Sign-in requests optional read-only YouTube permission and connects the same account when granted; builders can connect a different uploader account if needed. The connector supports private video-level reports including views, watch time and average viewing duration. The OAuth app remains in Testing mode, and owner-authorized video report retrieval has been validated.
 
 No Managed Agents integration is claimed. Gemini API access is separate from the Antigravity subscription.
 

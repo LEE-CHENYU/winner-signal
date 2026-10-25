@@ -147,15 +147,18 @@ export function YouTubeAnalytics({
   const [report, setReport] = useState<YoutubeReport | null>(null);
   useEffect(() => {
     let active = true;
-    api<YoutubeReport>("/versions/" + versionId + "/youtube-analytics")
+    const poll = () => api<YoutubeReport>("/versions/" + versionId + "/youtube-analytics")
       .then((r) => {
         if (active) setReport(r);
       })
       .catch(() => {
         if (active) setReport({ status: "connection_error" });
       });
+    void poll();
+    const timer = setInterval(() => { if (document.visibilityState === "visible") void poll(); }, 30000);
     return () => {
       active = false;
+      clearInterval(timer);
     };
   }, [versionId, revision]);
   return (
@@ -175,9 +178,8 @@ export function YouTubeAnalytics({
             <strong>From YouTube Analytics API</strong> · {report.channel_title}
           </p>
           <p>
-            Data through {report.latest_available_day}. Last fetched{" "}
-            {report.fetched_at?.slice(0, 16).replace("T", " ")} UTC. Updates
-            when you open this dashboard, at most once every six hours.
+            Today, Pacific time · Last checked {report.fetched_at?.slice(11, 19)} UTC.
+            Automatically checked every 30 seconds. YouTube reports can be delayed; these are not real-time counts.
           </p>
           <div style={{ overflowX: "auto" }}>
             <table>
@@ -213,7 +215,7 @@ export function YouTubeAnalytics({
           {report.status === "different_channel"
             ? "This demo belongs to another channel. Connect its uploader account above, or keep the demo and use Winner Signal analytics."
             : report.status === "pending_data"
-              ? "YouTube is connected, but no report rows are available yet. Reporting can be delayed; this does not mean zero views."
+              ? "Today, Pacific time: YouTube has not released this report yet. Automatically rechecked every 30 seconds. Pending does not mean zero views."
               : report.status === "not_youtube"
                 ? "Add the original YouTube URL to a demo version to fetch its YouTube analytics."
                 : report.status === "not_connected"

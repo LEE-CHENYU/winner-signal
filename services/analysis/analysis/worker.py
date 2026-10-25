@@ -39,6 +39,7 @@ def once():
             "youtube_review_duration_limit",
             "unsupported_audio_claim",
             "invalid_video_timestamp",
+            "model_output_invalid_json",
             "provider_not_configured",
             "video_processing_failed",
             "video_processing_timeout",

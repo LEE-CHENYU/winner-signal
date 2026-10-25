@@ -116,3 +116,13 @@ Published the application source at https://github.com/LEE-CHENYU/winner-signal 
 - Added structured agent trace findings: actor, action, reported outcome, assessment, exact history quotation, artifact hash/character offsets, and validated source citations. Unsupported trace quotes are rejected. Missing histories do not incur a penalty.
 - Private review UI now displays trace findings separately. Participant-supplied traces do not establish independent execution or causal attribution.
 - Automated checks: backend suite 35 passed before repository coverage test; added coverage test and trace tests pass (3). Frontend lint and production build passed.
+
+### Live understanding verification and daily display
+- The first combined live review failed JSON parsing. Tightened output to six video claims and six trace findings with short quotations; failed JSON responses now have private diagnostics and an explicit failure code.
+- A second real Gemini run on submission1.mov, the public pinned repository, and a labeled curated excerpt from this build session succeeded: 5 video claims, 6 trace findings, and independently verified evidence seal. Run 3772f476add848f9ad78bb0b8f4b4747; private local receipt in data/live-understanding-result.json. This was an uploaded-file test, not the production YouTube-URL route.
+- The model correctly noted that the video only shows the landing page and narration and ends before the promised example/results. This is a single integration check, not an accuracy benchmark or validation of agent attribution.
+- Today-only reporting uses Pacific day boundaries. First-party activity refreshes every 5 seconds; YouTube API requests refresh every 30 seconds and explicitly disclose processing delay. Older rows and cached multi-day reports are excluded.
+- YouTube URLs now embed directly in the shared player used by public pages and workspace previews, with original-host fallback. Iframe loads do not generate synthetic playback counts.
+- Added Copy demo link on public demo pages and published workspaces, with clipboard-denied manual-copy fallback. Drafts show a publish-first hint.
+- Live app confirms the user demo is published at /d/winner-signal-19daa4.
+- Final checks: 36 backend tests passed plus the new Pacific-midnight boundary test; frontend lint and production build passed after embed/share changes.

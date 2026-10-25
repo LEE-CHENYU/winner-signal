@@ -147,6 +147,29 @@ export function Player({
       return () => p.destroy();
     }
   }, [version.id, bindingId, diagnostic]);
+  let youtubeId: string | null = null;
+  try {
+    const url = new URL(version.video_source_url || "");
+    const host = url.hostname.toLowerCase();
+    const candidate = host === "youtu.be" ? url.pathname.slice(1) :
+      ["youtube.com", "www.youtube.com", "m.youtube.com"].includes(host) ?
+        (url.pathname === "/watch" ? url.searchParams.get("v") : /^\/(?:shorts|embed)\/([^/]+)$/.exec(url.pathname)?.[1]) : null;
+    if (candidate && /^[A-Za-z0-9_-]{11}$/.test(candidate)) youtubeId = candidate;
+  } catch { /* Other hosted videos retain their original link. */ }
+  if (!version.video_asset_id && youtubeId) return (
+    <div>
+      <iframe
+        key={youtubeId}
+        title="Demo video on YouTube"
+        src={`https://www.youtube-nocookie.com/embed/${youtubeId}?playsinline=1`}
+        style={{width: "100%", aspectRatio: "16 / 9", minHeight: 200, border: 0}}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      />
+      <p><a href={version.video_source_url!} target="_blank" rel="noreferrer">Open on YouTube ↗</a></p>
+    </div>
+  );
   if (!version.video_asset_id)
     return (
       <div className="unavailable">
@@ -547,6 +570,20 @@ function Projects() {
     </>
   );
 }
+function ShareDemoLink({ slug }: { slug: string }) {
+  const [copied, setCopied] = useState(false);
+  const [fallback, setFallback] = useState("");
+  return <div>
+    <button className="secondary" onClick={async () => {
+      const url = new URL("/d/" + encodeURIComponent(slug), window.location.origin).href;
+      try { await navigator.clipboard.writeText(url); setCopied(true); setFallback(""); }
+      catch { setFallback(url); }
+    }}>{copied ? "Link copied ✓" : "Copy demo link"}</button>
+    <span className="muted" role="status">{copied ? " Ready to share" : ""}</span>
+    {fallback && <label>Copy this public URL<input aria-label="Public demo URL" readOnly value={fallback} onFocus={(event) => event.currentTarget.select()} /></label>}
+  </div>;
+}
+
 export function DemoPage({ slug }: { slug: string }) {
   const [demo, setDemo] = useState<Demo | null>(null);
   const [error, setError] = useState("");
@@ -581,7 +618,7 @@ export function DemoPage({ slug }: { slug: string }) {
           <h1>{demo.title}</h1>
           <p>{demo.description}</p>
         </div>
-        <span className="pill">Version {demo.version.version_number}</span>
+        <div className="row"><span className="pill">Version {demo.version.version_number}</span><ShareDemoLink slug={slug} /></div>
       </div>
       {!!demo.version.is_fixture && (
         <p className="notice">
@@ -814,11 +851,9 @@ function DashboardBody({ id }: { id: string }) {
           <button className="secondary" onClick={() => setNewVersion(true)}>
             New version
           </button>
-          {project.published_version_id && (
-            <Link className="button" href={"/d/" + project.slug}>
-              Public demo ↗
-            </Link>
-          )}
+          {project.published_version_id ? (
+            <><Link className="button" href={"/d/" + project.slug}>Public demo ↗</Link><ShareDemoLink slug={project.slug} /></>
+          ) : <span className="muted">Publish your demo to get a shareable link.</span>}
         </div>
       </div>
       <ErrorBox error={error} />
@@ -930,7 +965,7 @@ function DashboardBody({ id }: { id: string }) {
             <section className="audience">
               <h2>Views on Winner Signal</h2>
               <p className="muted">
-                {data?.period || "All time, UTC"} · Approximate distinct browser
+                {data?.period || "Today, Pacific time"} · Refreshes every 5 seconds · Approximate distinct browser
                 sessions
               </p>
               {!v.video_asset_id && (

@@ -53,7 +53,7 @@ def test_successful_reports_are_scoped_private_and_cached(clients, google):
         if path == 'videos':
             return {'items': [{'snippet': {'channelId': 'channel-A'}}]}
         return {'columnHeaders': [{'name': n} for n in ('day', 'views', 'estimatedMinutesWatched', 'averageViewDuration', 'averageViewPercentage')],
-                'rows': [['2026-10-24', 12, 8, 40, 66.7]]}
+                'rows': [[youtube.today_window()[0], 12, 8, 40, 66.7]]}
     google.setattr(youtube, 'get', get)
     url = '/api/versions/' + v['id'] + '/youtube-analytics'
     report = owner.get(url).json()
@@ -61,6 +61,7 @@ def test_successful_reports_are_scoped_private_and_cached(clients, google):
     assert report['daily'][0]['views'] == 12
     assert calls[1][1]['filters'] == 'video==abcdefghijk'
     assert calls[1][1]['ids'] == 'channel==MINE'
+    assert calls[1][1]['startDate'] == calls[1][1]['endDate'] == youtube.today_window()[0]
     assert owner.get(url).json() == report
     assert len(calls) == 2
     assert stranger.get(url).status_code in (403, 404)

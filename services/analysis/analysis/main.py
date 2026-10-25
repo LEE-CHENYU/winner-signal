@@ -16,6 +16,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from .storage import DATA, UPLOADS, db, init_db, uid, now
 from .auth import COOKIE, identity, password_hash, check_password, own_project, own_version
 from .repository import snapshot
+from .reporting import today_window
 
 
 @asynccontextmanager
@@ -576,6 +577,7 @@ def report(fid: str, request: Request):
 
 @app.get("/api/projects/{pid}/analytics")
 def analytics(pid: str, request: Request, version_id: str | None = None):
+    today, start, end = today_window()
     with db() as con:
         own_project(con, pid, identity(request))
         v = con.execute(
@@ -588,8 +590,8 @@ def analytics(pid: str, request: Request, version_id: str | None = None):
         rows = [
             dict(r)
             for r in con.execute(
-                "SELECT * FROM engagement_events WHERE version_id=? AND eligible_for_metrics=1",
-                (vid,),
+                "SELECT * FROM engagement_events WHERE version_id=? AND eligible_for_metrics=1 AND julianday(server_received_at)>=julianday(?) AND julianday(server_received_at)<julianday(?)",
+                (vid, start, end),
             )
         ]
 
@@ -610,8 +612,8 @@ def analytics(pid: str, request: Request, version_id: str | None = None):
         feedback = [
             dict(r)
             for r in con.execute(
-                "SELECT id,kind,text,created_at,moderation_status FROM feedback WHERE version_id=? ORDER BY created_at DESC LIMIT 50",
-                (vid,),
+                "SELECT id,kind,text,created_at,moderation_status FROM feedback WHERE version_id=? AND julianday(created_at)>=julianday(?) AND julianday(created_at)<julianday(?) ORDER BY created_at DESC LIMIT 50",
+                (vid, start, end),
             )
         ]
         reports = [
@@ -626,7 +628,7 @@ def analytics(pid: str, request: Request, version_id: str | None = None):
         ).fetchone()
     return {
         "version_id": vid,
-        "period": "All time, UTC",
+        "period": "Today, Pacific time (" + today + ")",
         "metrics": {
             "page_visitors": count("page_view"),
             "video_starts": len(starts),
