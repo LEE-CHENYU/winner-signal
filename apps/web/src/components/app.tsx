@@ -969,6 +969,30 @@ function DashboardBody({ id }: { id: string }) {
               <YouTubeAnalytics key={v.id} versionId={v.id} projectId={id} />
             </section>
           </div>
+          {project.slug === "winner-signal-19daa4" && <section className="panel" aria-labelledby="mock-trace-heading">
+            <div className="section-heading">
+              <div><h2 id="mock-trace-heading">From video activity to agent actions</h2><p>A worked example of the evidence connection.</p></div>
+              <span className="pill">Mock example · synthetic</span>
+            </div>
+            <p className="notice">Fictional follow-up demo and trace, not results from your uploaded video or session. These values are never saved as real evidence.</p>
+            <div className="metrics">
+              <div><span>Sample video views</span><strong>24</strong></div>
+              <div><span>Sample average watched</span><strong>75%</strong></div>
+              <div><span>Sample video length</span><strong>40s</strong></div>
+            </div>
+            <div style={{overflowX: "auto"}}>
+              <table>
+                <thead><tr><th>Video evidence</th><th>Agent trace</th><th>Implementation evidence</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>00:08–00:14</strong><br />Viewer sees a demo link saved.</td><td><strong>Human → agent</strong><br />“Accept a YouTube URL without requiring a second upload.”</td><td>Illustrative change: URL validation and a version record containing the original video link.</td></tr>
+                  <tr><td><strong>00:15–00:27</strong><br />A review opens with timestamped claims and code references.</td><td><strong>Agent → tool</strong><br />Implement media review and validate returned file paths, line ranges, and timestamps.</td><td>Illustrative test result: invalid citations rejected; valid references retained. Reported by the trace, not independently replayed.</td></tr>
+                  <tr><td><strong>00:28–00:40</strong><br />An expandable finding shows the build action behind a claim.</td><td><strong>Agent → revision</strong><br />Add exact trace quotations and distinguish agent work from human instructions.</td><td>Illustrative link: video claim → source excerpt → quoted build action → reported test outcome.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p><strong>What the sample activity tells us:</strong> 75% of a 40-second video is a 30-second average view. It does not reveal which viewers reached a particular segment or why they watched.</p>
+            <p><strong>What to evaluate next:</strong> Replay the cited behavior and test the code change. Compare later versions under comparable exposure before attributing audience response to an agent action.</p>
+          </section>}
           <section className="panel">
             <h2>Private evidence review</h2>
             <p>
