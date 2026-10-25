@@ -28,12 +28,12 @@ export function YouTubeConnection({
       <h3>
         {onSelect
           ? "YouTube analytics"
-          : "YouTube account for analytics"}
+          : "YouTube account for video data"}
       </h3>
       <p>
         {status?.connection
           ? "Your channel is connected. Reports appear in your demo dashboard."
-          : "Google sign-in connects analytics when you grant access. You can still add a demo without it."}
+          : "Google sign-in connects video data when you grant access. You can still add a demo without it."}
       </p>
       {status?.connection && (
         <p>
@@ -206,8 +206,7 @@ export function YouTubeAnalytics({
             </table>
           </div>
           <p>
-            YouTube views and averages use YouTube’s definitions. They are
-            separate from Winner Signal playback coverage and completion.
+            YouTube views and averages use YouTube’s definitions. Average percentage watched is not a completion rate.
           </p>
         </div>
       ) : (
@@ -219,7 +218,7 @@ export function YouTubeAnalytics({
               : report.status === "not_youtube"
                 ? "Add the original YouTube URL to a demo version to fetch its YouTube analytics."
                 : report.status === "not_connected"
-                  ? "YouTube analytics is optional. Connect the uploader account to fetch it automatically."
+                  ? "YouTube video data is optional. Connect the uploader account to fetch it automatically."
                   : report.message ||
                     "YouTube analytics is temporarily unavailable. Your demo and Winner Signal analytics remain available."}
         </p>

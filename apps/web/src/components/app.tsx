@@ -760,6 +760,7 @@ function DashboardBody({ id }: { id: string }) {
     { id: string; preview: string; redaction_status: string }[]
   >([]);
   const [includeHistory, setIncludeHistory] = useState(false);
+  const [historyText, setHistoryText] = useState("");
   const [health, setHealth] = useState<{
     analysis_configured: boolean;
     model: string;
@@ -963,69 +964,9 @@ function DashboardBody({ id }: { id: string }) {
               </div>
             </section>
             <section className="audience">
-              <h2>Views on Winner Signal</h2>
-              <p className="muted">
-                {data?.period || "Today, Pacific time"} · Refreshes every 5 seconds · Approximate distinct browser
-                sessions
-              </p>
-              {!v.video_asset_id && (
-                <p className="notice">
-                  Page visits and feedback are tracked here. Connect YouTube
-                  below for video views and watch time.
-                </p>
-              )}
-              {data?.metrics && (
-                <>
-                  <div className="metrics">
-                    {[
-                      ["Page visitors", data.metrics.page_visitors],
-                      [
-                        "Video starts",
-                        v.video_asset_id
-                          ? data.metrics.video_starts
-                          : "Unavailable",
-                      ],
-                      [
-                        "Completion",
-                        data.metrics.completion_rate === null
-                          ? "—"
-                          : Math.round(data.metrics.completion_rate * 100) +
-                            "%",
-                      ],
-                      ["Code clicks", data.metrics.github_clicks],
-                      ["App clicks", data.metrics.livedemo_clicks],
-                      ["Would use it", data.metrics.use_this_count],
-                    ].map(([label, value]) => (
-                      <div key={label}>
-                        <span>{label}</span>
-                        <strong>{value}</strong>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="muted">
-                    Completion: {data.metrics.completions} /{" "}
-                    {data.metrics.video_starts} started sessions watched at
-                    least 90% coverage.{" "}
-                    {data.metrics.small_sample
-                      ? "Small sample; interpret cautiously."
-                      : ""}
-                  </p>
-                </>
-              )}
-              <p className="status">
-                Tracking:{" "}
-                {data?.binding?.status || "page activity only"}
-              </p>
-              <aside className="notice" aria-labelledby="sample-reconciliation-heading">
-                <h3 id="sample-reconciliation-heading">Sample reconciliation <span className="pill">Synthetic example</span></h3>
-                <p>Illustrative values only — not this demo’s results. Excluded from stored metrics, reviews, and training evidence.</p>
-                <div className="metrics">
-                  {[["Example visitors", 120], ["Example video starts", 80], ["Example completions", 48], ["Example code clicks", 24], ["Example app clicks", 18], ["Example interest", 12]].map(([label, value]) => <div key={label}><span>{label}</span><strong>{value}</strong></div>)}
-                </div>
-                <p><strong>Illustrative completion:</strong> 48 ÷ 80 = 60%, assuming instrumented playback. This example does not imply the YouTube embed currently reports starts or completion here.</p>
-                <p><strong>Separate host report:</strong> 200 example YouTube views are not added to 120 browser visitors. The populations and counting rules differ; overlap is unknown.</p>
-                <p><strong>Interpretation:</strong> Clicks and stated interest suggest follow-up opportunities. They do not establish product adoption, economic value, or agent capability.</p>
-              </aside>
+              <h2>Video audience</h2>
+              <p className="muted">Today, Pacific time · Demo video data only</p>
+              <YouTubeAnalytics key={v.id} versionId={v.id} projectId={id} />
             </section>
           </div>
           <section className="panel">
@@ -1080,6 +1021,16 @@ function DashboardBody({ id }: { id: string }) {
                   }}
                 />
               </label>
+              <label>
+                Or paste reviewed build history
+                <textarea value={historyText} maxLength={1000000} onChange={(event) => setHistoryText(event.target.value)} placeholder="Paste selected prompts, agent messages, or tool results…" />
+              </label>
+              <button className="secondary" disabled={busy || !historyText.trim()} onClick={() => void act(async () => {
+                await upload("/versions/" + v.id + "/history", new File([historyText], "pasted-build-history.txt", {type: "text/plain"}));
+                setHistoryText("");
+                await refresh();
+                setNotice("Build history saved privately. Include it in a review only when you choose.");
+              })}>Save pasted history</button>
               {histories.map((h) => (
                 <div key={h.id}>
                   <p>{h.redaction_status}</p>
@@ -1232,12 +1183,7 @@ function DashboardBody({ id }: { id: string }) {
             )}
           </section>
           <section className="panel">
-            <h2>Original-host analytics</h2>
-            <YouTubeAnalytics key={v.id} versionId={v.id} projectId={id} />
-            <p>
-              These reports describe the original video host, not just this
-              page. They are never added to Winner Signal counts.
-            </p>
+            <h2>Optional exported video report</h2>
             <details>
               <summary>Import an owner-provided analytics report</summary>
               <p>
