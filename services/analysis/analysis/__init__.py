@@ -1,0 +1,1 @@
+# Winner Signal analysis package

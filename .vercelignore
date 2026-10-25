@@ -1,0 +1,13 @@
+.env*
+.venv/
+data/
+session-history/
+vendor/
+services/
+fixtures/
+deploy/
+**/node_modules/
+**/.next/
+**/__pycache__/
+**/.pytest_cache/
+.ruff_cache/

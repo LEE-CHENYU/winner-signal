@@ -1,0 +1,22 @@
+# Local conversation handoff; do not publish participant/session histories.
+/session-history/
+.env
+.env.*
+!.env.example
+
+# Runtime data
+/data/
+node_modules/
+__pycache__/
+*.pyc
+.next/
+*.egg-info/
+
+.venv/
+*.tsbuildinfo
+
+.ruff_cache/
+.pytest_cache/
+
+.vercel/
+.vercel
