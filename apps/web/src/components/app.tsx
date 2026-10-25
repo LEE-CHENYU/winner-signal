@@ -1016,6 +1016,16 @@ function DashboardBody({ id }: { id: string }) {
                 Tracking:{" "}
                 {data?.binding?.status || "page activity only"}
               </p>
+              <aside className="notice" aria-labelledby="sample-reconciliation-heading">
+                <h3 id="sample-reconciliation-heading">Sample reconciliation <span className="pill">Synthetic example</span></h3>
+                <p>Illustrative values only — not this demo’s results. Excluded from stored metrics, reviews, and training evidence.</p>
+                <div className="metrics">
+                  {[["Example visitors", 120], ["Example video starts", 80], ["Example completions", 48], ["Example code clicks", 24], ["Example app clicks", 18], ["Example interest", 12]].map(([label, value]) => <div key={label}><span>{label}</span><strong>{value}</strong></div>)}
+                </div>
+                <p><strong>Illustrative completion:</strong> 48 ÷ 80 = 60%, assuming instrumented playback. This example does not imply the YouTube embed currently reports starts or completion here.</p>
+                <p><strong>Separate host report:</strong> 200 example YouTube views are not added to 120 browser visitors. The populations and counting rules differ; overlap is unknown.</p>
+                <p><strong>Interpretation:</strong> Clicks and stated interest suggest follow-up opportunities. They do not establish product adoption, economic value, or agent capability.</p>
+              </aside>
             </section>
           </div>
           <section className="panel">
@@ -1034,10 +1044,10 @@ function DashboardBody({ id }: { id: string }) {
                 app; the gallery and analytics work independently.
               </p>
             )}
-            <details>
-              <summary>
-                Optional build history ({histories.length} files)
-              </summary>
+            <section aria-labelledby="build-history-heading">
+              <h3 id="build-history-heading">
+                Build history <span className="muted">Optional · {histories.length} files</span>
+              </h3>
               <p>
                 Upload only selected, reviewed exports. Best-effort redaction is
                 not a guarantee. Originals are not retained; the redacted text
@@ -1101,7 +1111,7 @@ function DashboardBody({ id }: { id: string }) {
                 />
                 Include these redacted histories in the next Gemini review
               </label>
-            </details>
+            </section>
             <button
               disabled={
                 busy ||
