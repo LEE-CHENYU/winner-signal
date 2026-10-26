@@ -126,3 +126,11 @@ Published the application source at https://github.com/LEE-CHENYU/winner-signal 
 - Added Copy demo link on public demo pages and published workspaces, with clipboard-denied manual-copy fallback. Drafts show a publish-first hint.
 - Live app confirms the user demo is published at /d/winner-signal-19daa4.
 - Final checks: 36 backend tests passed plus the new Pacific-midnight boundary test; frontend lint and production build passed after embed/share changes.
+
+## Synthetic viewer simulation — October 25, 2026
+
+Replaced hand-entered mock viewing counts with an offline seeded probability model (`scripts/simulate_video_reactions.py`). Four fictional scenes in a 90-second storyboard; three assumed personas; one categorical reaction per reached scene; conditional replay and exit draws. No real user data or provider calls. Workspace offers three reproducible cohorts, final reaction distributions, per-scene retention/reactions, selected individual paths, assumptions, and real build-change links. Scene matching is curated, not automated attribution.
+
+Executed 100 cohorts of 1,000 viewers, seeds 20261025–20261124. Seed 20261025: 470 complete, 530 exit; final reactions 297 interested, 230 confused, 211 skeptical, 262 disengaged. Completion across cohorts: median 47.2%, empirical p10–p90 45.0–48.9%, min–max 42.9–51.5%. These ranges describe fixed-model Monte Carlo variation, not real-population uncertainty. All runs retained.
+
+Checks pass: deterministic replay; starts reconcile with exits plus completions; scene reactions reconcile with reached viewers; no events after exit; replay bounds; single-viewer and invalid-cohort boundaries. Frontend lint and production build pass. Generated aggregate artifact includes assumptions, three cohorts, and first completion/exit examples per persona; full synthetic paths can be regenerated. Display-only data never enters real reports or training datasets.
