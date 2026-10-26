@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import simulation from "@/data/viewer-simulation.json";
+import simulation from "@/lib/viewer-simulation.json";
 
 const percent = (count: number, total: number) => `${(100 * count / total).toFixed(1)}%`;
 const colors = ["#27272a", "#71717a", "#a1a1aa", "#d4d4d8"];
@@ -82,7 +82,7 @@ export function ViewerSimulation() {
       <p>Scene adjustments in percentage points: introduction unchanged; account connection −10 interested, +10 confused; evidence +5 interested, −5 confused; recovery −10 interested, +5 confused, +5 skeptical.</p>
       <p>Base exit probabilities: interested 4%, confused 22%, skeptical 14%, disengaged 45%. Account connection adds 4 percentage points and recovery adds 2. Replay probabilities: interested 18%, confused 35%, skeptical 12%, disengaged 2%.</p>
       <p>Reactions are redrawn per scene given persona; the model does not represent memory, social influence, video length effects, or real comprehension. No probabilities have been calibrated against users. A longer scene does not automatically increase its exit probability.</p>
-      <p>Run <code>python3 scripts/simulate_video_reactions.py</code> to regenerate and check the artifact. <a href={`${repo}/blob/main/scripts/simulate_video_reactions.py`} target="_blank" rel="noreferrer">Generator ↗</a> · <a href={`${repo}/blob/main/apps/web/src/data/viewer-simulation.json`} target="_blank" rel="noreferrer">Aggregate artifact and sample paths ↗</a></p>
+      <p>Run <code>python3 scripts/simulate_video_reactions.py</code> to regenerate and check the artifact. <a href={`${repo}/blob/main/scripts/simulate_video_reactions.py`} target="_blank" rel="noreferrer">Generator ↗</a> · <a href={`${repo}/blob/main/apps/web/src/lib/viewer-simulation.json`} target="_blank" rel="noreferrer">Aggregate artifact and sample paths ↗</a></p>
     </details>
     <p className="notice">Display-only simulation. No synthetic records are written to real reports, feedback totals, agent scores, or training datasets. No video file is generated.</p>
   </section>;

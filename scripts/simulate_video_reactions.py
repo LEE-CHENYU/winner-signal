@@ -116,7 +116,7 @@ def main():
                              'Scene reactions = viewers reached', 'No events after exit',
                              'Replays bounded by reached viewers', 'Single-viewer and invalid-cohort boundaries'],
                   'status': 'passed'}}
-    path = ROOT / 'apps/web/src/data/viewer-simulation.json'
+    path = ROOT / 'apps/web/src/lib/viewer-simulation.json'
     path.write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps({'distribution_check': result['distribution_check'], 'baseline': runs[0]}, indent=2))
 
