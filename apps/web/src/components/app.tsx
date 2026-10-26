@@ -972,63 +972,65 @@ function DashboardBody({ id }: { id: string }) {
           {project.slug === "winner-signal-19daa4" && <section className="panel" aria-labelledby="feedback-trace-heading">
             <div className="section-heading">
               <div><h2 id="feedback-trace-heading">Video response → agent trajectory</h2><p>Follow a viewing signal back to the implementation behind a demo claim.</p></div>
-              <span className="pill">SIMULATED VIDEO DATA</span>
+              <span className="pill">SIMULATED SCENES + VIEWING DATA</span>
             </div>
-            <p className="notice">All viewing numbers below are invented for this demonstration, not fetched from YouTube. Timestamps refer to our original 31-second recording, not the final 50-second submission. Code and build checkpoints are real; the matches are curated hypotheses.</p>
+            <p className="notice">A fictional 90-second product walkthrough, with invented scenes, narration, retention, and replay events. This is a storyboard, not an uploaded or analyzed video. It is independent of our submitted recordings. Linked code and build checkpoints are real; the connections are illustrative hypotheses.</p>
             <div className="row" style={{ flexWrap: "wrap", gap: "2rem" }}>
               <div><strong>100</strong><p className="muted">Simulated starts</p></div>
               <div><strong>46 / 100</strong><p className="muted">Simulated viewers reaching the end</p></div>
-              <div><strong>18</strong><p className="muted">Simulated replay events at 13–17s</p></div>
+              <div><strong>18</strong><p className="muted">Simulated replay events at 30–45s</p></div>
             </div>
+            <h3>Fictional video · “From build to evidence” · 01:30</h3>
+            <p><strong>00:00–00:15:</strong> Introduce a project and its demo. <strong>00:15–00:30:</strong> Connect the uploader account. <strong>00:30–01:00:</strong> Open a finding, its source code, and its agent trace. <strong>01:00–01:30:</strong> Show a review failure, retry, and the completed report.</p>
             <h3>Illustrative audience retention</h3>
             <p className="muted">Viewers remaining from 100 simulated starts; replay events are counted separately.</p>
-            {[{time: "0s", value: 100}, {time: "6s", value: 92}, {time: "13s", value: 84}, {time: "17s", value: 80}, {time: "21s", value: 63}, {time: "28s", value: 51}, {time: "31s", value: 46}].map((point) => <div key={point.time} style={{ display: "grid", gridTemplateColumns: "3rem 1fr 3rem", gap: "1rem", alignItems: "center", marginBlock: ".6rem" }}>
+            {[{time: "0s", value: 100}, {time: "15s", value: 92}, {time: "30s", value: 75}, {time: "45s", value: 71}, {time: "60s", value: 63}, {time: "75s", value: 51}, {time: "90s", value: 46}].map((point) => <div key={point.time} style={{ display: "grid", gridTemplateColumns: "3rem 1fr 3rem", gap: "1rem", alignItems: "center", marginBlock: ".6rem" }}>
               <span>{point.time}</span><div style={{ background: "#e5e7eb", height: "12px" }}><div style={{ width: `${point.value}%`, background: "#52525b", height: "100%" }} /></div><span>{point.value}%</span>
             </div>)}
             {[
               {
                 title: "Replay cluster → inspect claim-to-code grounding",
-                time: 13,
-                metric: "SIMULATED · 18 replay events at 00:13–00:17; retention 84% → 80%",
-                moment: "The narrator describes comparing video claims with source code. A completed review is not shown in this recording.",
-                action: "At the recorded revision, the agent implemented timestamp and source-line validation. Later, commit 698857b added structured agent findings with exact trace quotations.",
+                time: "00:30–00:45",
+                metric: "SIMULATED · 18 replay events at 00:30–00:45; retention 75% → 71%",
+                moment: "Scene: a builder opens a review finding, selects its source citation, and expands the agent’s original action. Narration: “Follow this claim into the code and the build step that produced it.”",
+                action: "The actual build added timestamp and source-line validation. Commit 698857b added structured actor/action/outcome findings with exact trace quotations.",
                 commit: "698857b",
                 file: "services/analysis/analysis/gemini_analyzer.py",
-                hypothesis: "Replays could reflect interest or confusion. Inspect the validator and trace-grounding change, then test a version that visibly opens one cited finding.",
-                boundary: "The trace-grounding change came after this recording. It is a follow-up candidate, not the cause of these simulated replays.",
+                hypothesis: "Replays could reflect interest or confusion about the evidence chain. Compare a concise citation walkthrough with a longer one, then measure whether viewers can locate the supporting source.",
+                boundary: "This scene is invented to illustrate the real trace-grounding implementation. No replay events were observed, and no causal contribution is assigned to the agent.",
               },
               {
                 title: "Retention drop → inspect the account-to-report path",
-                time: 17,
-                metric: "SIMULATED · 17 of 100 starting viewers leave between 00:17 and 00:21",
-                moment: "The narration moves to audience response; the recording does not show a fetched report.",
+                time: "00:15–00:30",
+                metric: "SIMULATED · 17 of 100 starting viewers leave between 00:15 and 00:30",
+                moment: "Scene: the builder signs in, sees that the video belongs to another account, and opens the optional uploader connection. Narration: “Use the account that owns this video.”",
                 action: "The build history records OAuth failures followed by a repair and passing tests. The implementation connects the sign-in account, supports a different uploader, and requests video-scoped reports.",
                 commit: "6f8aeb1c2c1d6abd42dabf457c4f7dbdac12fd95",
                 file: "services/analysis/analysis/google_oauth.py",
-                hypothesis: "The transition may need a concrete demonstration. Trace the account connection and video ownership flow, then show its actual result in the next recording.",
-                boundary: "A drop-off does not establish an OAuth defect. The mapping identifies code to inspect, not an agent failure score.",
+                hypothesis: "The account switch may interrupt the story. Inspect the existing connection fallback, then compare a shorter explanation with a full account-switch walkthrough.",
+                boundary: "The depicted account mismatch and audience drop are fictional. This is a connection to relevant code, not evidence of a real OAuth defect or agent failure.",
               },
               {
-                title: "Ending losses → inspect the missing result and later repair",
-                time: 27,
-                metric: "SIMULATED · 51% remain at 00:28; 46% reach 00:31",
-                moment: "The original recording ends after promising an example, without showing the review result.",
-                action: "A later combined live review failed JSON parsing. The agent bounded response size and added diagnostics; the recorded rerun produced five claims, six trace findings, and a verified seal.",
+                title: "Ending losses → inspect review recovery",
+                time: "01:00–01:30",
+                metric: "SIMULATED · 63% remain at 01:00; 46% reach the end at 01:30",
+                moment: "Scene: a review shows a response-format failure, the builder retries, and a completed evidence report appears. Narration: “The recovered review links each finding to its source.”",
+                action: "The actual coding history includes a combined live review failing JSON parsing. The agent bounded response size and added diagnostics; the recorded rerun produced five claims, six trace findings, and a verified seal.",
                 commit: "b53f633",
                 file: "services/analysis/analysis/gemini_analyzer.py",
-                hypothesis: "Use the completed review as the next demo’s payoff. Compare matched recordings with similar traffic before drawing conclusions about completion.",
-                boundary: "The repair and successful rerun are later build evidence. They cannot explain earlier viewing behavior, and these viewing numbers are synthetic.",
+                hypothesis: "The recovery sequence may delay the payoff. Compare a result-first edit with a failure-and-recovery edit under similar traffic, then check whether viewers understand the evidence.",
+                boundary: "The on-screen recovery is a fictional storyboard inspired by real development history. It does not claim that a user encountered this sequence or that a production retry was observed.",
               },
             ].map((finding) => <article className="claim" key={finding.title}>
               <div className="row"><h3>{finding.title}</h3><span className="pill">Hypothesis · curated match</span></div>
               <p><strong>{finding.metric}</strong></p>
-              <p><a className="timestamp" href={`https://youtu.be/m-gMjoL5yew?t=${finding.time}`} target="_blank" rel="noreferrer">Watch the original moment ↗</a> · {finding.moment}</p>
+              <div className="notice"><span className="timestamp">{finding.time} · Fictional scene</span><p>{finding.moment}</p></div>
               <p><strong>Matched agent trajectory:</strong> {finding.action}</p>
               <p><a href={`https://github.com/LEE-CHENYU/winner-signal/blob/${finding.commit}/${finding.file}`} target="_blank" rel="noreferrer">Inspect pinned implementation ↗</a> · <a href={`https://github.com/LEE-CHENYU/winner-signal/commit/${finding.commit}`} target="_blank" rel="noreferrer">Inspect build change ↗</a></p>
               <p><strong>Next experiment:</strong> {finding.hypothesis}</p>
               <details><summary>Attribution boundary</summary><p>{finding.boundary}</p></details>
             </article>)}
-            <p className="muted">Simulation only. These numbers never enter real reports, feedback totals, agent scores, or training datasets.</p>
+            <p className="muted">Storyboard and viewing simulation only. No video file was generated. These examples never enter real reports, feedback totals, agent scores, or training datasets.</p>
           </section>}
           {project.slug === "winner-signal-19daa4" && <section className="panel" aria-labelledby="build-backtrace-heading">
             <div className="section-heading">
