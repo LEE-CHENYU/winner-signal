@@ -971,50 +971,64 @@ function DashboardBody({ id }: { id: string }) {
           </div>
           {project.slug === "winner-signal-19daa4" && <section className="panel" aria-labelledby="feedback-trace-heading">
             <div className="section-heading">
-              <div><h2 id="feedback-trace-heading">Code evidence → agent trajectory</h2><p>Derive evaluation signals from what the coding agent actually changed.</p></div>
-              <span className="pill">Code-grounded · curated</span>
+              <div><h2 id="feedback-trace-heading">Video response → agent trajectory</h2><p>Follow a viewing signal back to the implementation behind a demo claim.</p></div>
+              <span className="pill">SIMULATED VIDEO DATA</span>
             </div>
-            <p className="notice">These findings use source changes and recorded coding history only. They are curated examples, not an automatic analysis of every project. No user comments, audience response, or satisfaction scores are inferred.</p>
+            <p className="notice">All viewing numbers below are invented for this demonstration, not fetched from YouTube. Timestamps refer to our original 31-second recording, not the final 50-second submission. Code and build checkpoints are real; the matches are curated hypotheses.</p>
+            <div className="row" style={{ flexWrap: "wrap", gap: "2rem" }}>
+              <div><strong>100</strong><p className="muted">Simulated starts</p></div>
+              <div><strong>46 / 100</strong><p className="muted">Simulated viewers reaching the end</p></div>
+              <div><strong>18</strong><p className="muted">Simulated replay events at 13–17s</p></div>
+            </div>
+            <h3>Illustrative audience retention</h3>
+            <p className="muted">Viewers remaining from 100 simulated starts; replay events are counted separately.</p>
+            {[{time: "0s", value: 100}, {time: "6s", value: 92}, {time: "13s", value: 84}, {time: "17s", value: 80}, {time: "21s", value: 63}, {time: "28s", value: 51}, {time: "31s", value: 46}].map((point) => <div key={point.time} style={{ display: "grid", gridTemplateColumns: "3rem 1fr 3rem", gap: "1rem", alignItems: "center", marginBlock: ".6rem" }}>
+              <span>{point.time}</span><div style={{ background: "#e5e7eb", height: "12px" }}><div style={{ width: `${point.value}%`, background: "#52525b", height: "100%" }} /></div><span>{point.value}%</span>
+            </div>)}
             {[
               {
-                title: "Trace quotations are checked against their source",
-                evidence: "The validator drops a trace finding when its artifact is absent or its quote is not present in the supplied text. Supported quotations receive character offsets.",
-                action: "The agent changed history ingestion from background context into structured actor/action/outcome findings with exact quotations.",
+                title: "Replay cluster → inspect claim-to-code grounding",
+                time: 13,
+                metric: "SIMULATED · 18 replay events at 00:13–00:17; retention 84% → 80%",
+                moment: "The narrator describes comparing video claims with source code. A completed review is not shown in this recording.",
+                action: "At the recorded revision, the agent implemented timestamp and source-line validation. Later, commit 698857b added structured agent findings with exact trace quotations.",
                 commit: "698857b",
                 file: "services/analysis/analysis/gemini_analyzer.py",
-                test: "services/analysis/tests/test_trace_review.py",
-                signal: "Candidate coding signal: unsupported trace claims rejected while supported claims retain inspectable provenance.",
-                limit: "An exact quote establishes textual support. It does not independently verify that the quoted action occurred.",
+                hypothesis: "Replays could reflect interest or confusion. Inspect the validator and trace-grounding change, then test a version that visibly opens one cited finding.",
+                boundary: "The trace-grounding change came after this recording. It is a follow-up candidate, not the cause of these simulated replays.",
               },
               {
-                title: "A parsing failure led to bounded review output",
-                evidence: "The review schema limits trace findings to six; the prompt requests concise JSON with bounded claims and quotations. Failure diagnostics were added around provider output.",
-                action: "After a combined live review failed JSON parsing, the agent tightened response size. The recorded follow-up run returned five claims, six trace findings, and a verified seal.",
+                title: "Retention drop → inspect the account-to-report path",
+                time: 17,
+                metric: "SIMULATED · 17 of 100 starting viewers leave between 00:17 and 00:21",
+                moment: "The narration moves to audience response; the recording does not show a fetched report.",
+                action: "The build history records OAuth failures followed by a repair and passing tests. The implementation connects the sign-in account, supports a different uploader, and requests video-scoped reports.",
+                commit: "6f8aeb1c2c1d6abd42dabf457c4f7dbdac12fd95",
+                file: "services/analysis/analysis/google_oauth.py",
+                hypothesis: "The transition may need a concrete demonstration. Trace the account connection and video ownership flow, then show its actual result in the next recording.",
+                boundary: "A drop-off does not establish an OAuth defect. The mapping identifies code to inspect, not an agent failure score.",
+              },
+              {
+                title: "Ending losses → inspect the missing result and later repair",
+                time: 27,
+                metric: "SIMULATED · 51% remain at 00:28; 46% reach 00:31",
+                moment: "The original recording ends after promising an example, without showing the review result.",
+                action: "A later combined live review failed JSON parsing. The agent bounded response size and added diagnostics; the recorded rerun produced five claims, six trace findings, and a verified seal.",
                 commit: "b53f633",
                 file: "services/analysis/analysis/gemini_analyzer.py",
-                test: "services/analysis/tests/test_linked_review.py",
-                signal: "Candidate coding signal: failure diagnosis → targeted repair → valid review artifact on the recorded rerun.",
-                limit: "This is one recorded recovery, not a general reliability estimate. Repeated held-out runs are needed to measure improvement.",
-              },
-              {
-                title: "Repository coverage was made explicit",
-                evidence: "The repository snapshot records bounded source coverage, with dedicated tests for the coverage behavior. Review findings remain limited to the supplied files.",
-                action: "The same trace-grounding change updated repository intake and added coverage tests, making the scope of available code evidence inspectable.",
-                commit: "698857b",
-                file: "services/analysis/analysis/repository.py",
-                test: "services/analysis/tests/test_repository_coverage.py",
-                signal: "Candidate coding signal: review scope is tied to the captured repository evidence rather than assumed complete.",
-                limit: "A bounded snapshot cannot establish correctness of omitted files or deployed behavior. Tests must be executed to establish their result.",
+                hypothesis: "Use the completed review as the next demo’s payoff. Compare matched recordings with similar traffic before drawing conclusions about completion.",
+                boundary: "The repair and successful rerun are later build evidence. They cannot explain earlier viewing behavior, and these viewing numbers are synthetic.",
               },
             ].map((finding) => <article className="claim" key={finding.title}>
-              <div className="row"><h3>{finding.title}</h3><span className="pill">Source-supported finding</span></div>
-              <p><strong>Code evidence:</strong> {finding.evidence}</p>
-              <p><strong>Matched agent action:</strong> {finding.action}</p>
-              <p><a href={`https://github.com/LEE-CHENYU/winner-signal/blob/${finding.commit}/${finding.file}`} target="_blank" rel="noreferrer">Inspect pinned code ↗</a> · <a href={`https://github.com/LEE-CHENYU/winner-signal/commit/${finding.commit}`} target="_blank" rel="noreferrer">Agent change · {finding.commit} ↗</a> · <a href={`https://github.com/LEE-CHENYU/winner-signal/blob/${finding.commit}/${finding.test}`} target="_blank" rel="noreferrer">Related tests ↗</a></p>
-              <p><strong>{finding.signal}</strong></p>
-              <details><summary>Evidence boundary</summary><p>{finding.limit}</p></details>
+              <div className="row"><h3>{finding.title}</h3><span className="pill">Hypothesis · curated match</span></div>
+              <p><strong>{finding.metric}</strong></p>
+              <p><a className="timestamp" href={`https://youtu.be/m-gMjoL5yew?t=${finding.time}`} target="_blank" rel="noreferrer">Watch the original moment ↗</a> · {finding.moment}</p>
+              <p><strong>Matched agent trajectory:</strong> {finding.action}</p>
+              <p><a href={`https://github.com/LEE-CHENYU/winner-signal/blob/${finding.commit}/${finding.file}`} target="_blank" rel="noreferrer">Inspect pinned implementation ↗</a> · <a href={`https://github.com/LEE-CHENYU/winner-signal/commit/${finding.commit}`} target="_blank" rel="noreferrer">Inspect build change ↗</a></p>
+              <p><strong>Next experiment:</strong> {finding.hypothesis}</p>
+              <details><summary>Attribution boundary</summary><p>{finding.boundary}</p></details>
             </article>)}
-            <p className="muted">Candidate evaluation signals only; no numerical agent score or demonstrated training gain is assigned.</p>
+            <p className="muted">Simulation only. These numbers never enter real reports, feedback totals, agent scores, or training datasets.</p>
           </section>}
           {project.slug === "winner-signal-19daa4" && <section className="panel" aria-labelledby="build-backtrace-heading">
             <div className="section-heading">
