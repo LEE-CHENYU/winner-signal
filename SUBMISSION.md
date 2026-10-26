@@ -1,8 +1,8 @@
-# Winner Signal — hackathon submission draft
+# Winner Signal — hackathon submission
 
 Event: Gemini 4 Argon SF Hackathon · October 25, 2026
 
-**Draft status:** Deployed prototype at https://winner-signal.vercel.app. Link-first gallery, feedback, repository snapshots, optional history ingestion and a YouTube analytics connector are implemented. Owner-authorized YouTube API retrieval has been verified; today’s reports may still be pending. Training gains have not been demonstrated. Gemini video-to-code review was tested on a controlled uploaded clip; a public YouTube URL review path is now implemented and tested; a live Gemini URL probe succeeded on Google’s public example, while an updated live review of our own uploaded demo, pinned code and a curated build-history excerpt succeeded with five video claims, six cited trace findings, and a verified evidence seal. The own-demo YouTube-URL review is still not separately verified. Public repository: https://github.com/LEE-CHENYU/winner-signal. Demo video: https://youtu.be/m-gMjoL5yew. The official hackathon form has not been submitted.
+**Draft status:** Deployed prototype at https://winner-signal.vercel.app. Link-first gallery, feedback, repository snapshots, optional history ingestion and a YouTube analytics connector are implemented. Owner-authorized YouTube API retrieval has been verified; today’s reports may still be pending. Training gains have not been demonstrated. Gemini video-to-code review was tested on a controlled uploaded clip; a public YouTube URL review path is now implemented and tested; a live Gemini URL probe succeeded on Google’s public example, while an updated live review of our own uploaded demo, pinned code and a curated build-history excerpt succeeded with five video claims, six cited trace findings, and a verified evidence seal. The own-demo YouTube-URL review is still not separately verified. Public repository: https://github.com/LEE-CHENYU/winner-signal. Final submitted demo video: https://youtu.be/Ne0YG65_d30 (50.4-second Desktop recording). Cerebral Valley confirmed “Project Submitted” on October 25, 2026. YouTube Studio subsequently confirmed Public / Published for the final recording.
 
 ## Team Name*
 
@@ -36,7 +36,7 @@ Before submitting: verify the repository is public and contains the actual build
 
 ## 1-Minute Demo Video*
 
-https://youtu.be/m-gMjoL5yew
+https://youtu.be/Ne0YG65_d30
 
 Before submitting: verify playback while signed out and keep the video within the form's one-minute requirement. Show the actual implemented workflow; label any fixture data or simulated outputs.
 
@@ -86,3 +86,12 @@ Do not fabricate the mock-booking finding: use a clearly labeled controlled exam
 - Obtain separate explicit permission before any future research sharing or training use of private histories and analytics; review consent is not training consent.
 - Ensure optional histories and private reports are not public.
 - Confirm the current deadline and submission rules in the organizer's interface; publishing a Winner Signal project is not submitting this hackathon entry.
+
+## Official submission receipt — October 25, 2026
+
+Cerebral Valley displayed **Project Submitted**.
+
+- Submission: https://cerebralvalley.ai/e/gemini-4-argon-sf/hackathon/ea035e99-a354-433b-a925-5cf40fa92c52/edit
+- Final video: https://youtu.be/Ne0YG65_d30
+- Selected source: `Screen Recording 2026-10-25 at 4.50.43 PM.mov` on Desktop; duration 50.439376 seconds.
+- Submitted description explicitly distinguishes curated backtraces, the successful uploaded-file Gemini review, and unproven training gains.

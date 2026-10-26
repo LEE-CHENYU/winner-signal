@@ -969,6 +969,53 @@ function DashboardBody({ id }: { id: string }) {
               <YouTubeAnalytics key={v.id} versionId={v.id} projectId={id} />
             </section>
           </div>
+          {project.slug === "winner-signal-19daa4" && <section className="panel" aria-labelledby="feedback-trace-heading">
+            <div className="section-heading">
+              <div><h2 id="feedback-trace-heading">Feedback → agent trajectory</h2><p>Explore how a viewer’s experience could guide the next build.</p></div>
+              <span className="pill">Simulated feedback · demo only</span>
+            </div>
+            <p className="notice">These comments are invented examples, not collected user feedback or YouTube data. Matches below are manually curated against our actual build history; they do not establish causal attribution or measured training gains.</p>
+            {[
+              {
+                title: "Make the evidence inspectable",
+                comment: "I can see the demo, but I want to know which agent action produced the result and inspect the original evidence.",
+                checkpoint: "23:32 UTC · History was only background context. The agent added structured actor/action/outcome findings and exact trace quotations.",
+                commit: "698857b",
+                match: "The request concerns action-level provenance, the same gap addressed by the structured trace findings. This is a thematic match, not proof that a viewer used the feature.",
+                next: "Ask a reviewer to locate the original quote and relevant code for one finding. Record whether they succeed and where they get stuck.",
+                signal: "Candidate signal: evidence-location success and time, measured in a future user task.",
+              },
+              {
+                title: "A review needs to finish reliably",
+                comment: "I would use this to review my project, but a failed review leaves me without anything actionable.",
+                checkpoint: "23:35 UTC · The first combined live review failed JSON parsing. The agent bounded response size and improved failure diagnostics; the next run returned five video claims and six trace findings with a verified seal.",
+                commit: "b53f633",
+                match: "The comment describes review reliability. The recorded failure and repair provide a concrete trajectory to inspect, but one successful rerun does not establish a general success rate.",
+                next: "Replay a fixed set of consented video/code/history inputs. Compare valid, source-grounded review completion before and after the fix.",
+                signal: "Candidate signal: usable review completion with valid citations, not merely HTTP success.",
+              },
+              {
+                title: "Keep real build history separate from illustration",
+                comment: "The backtrace is useful only if I can tell what really happened during the build and what is just an example.",
+                checkpoint: "Actual build correction · The agent replaced the fictional trace example with curated project decisions, failures, tests, and commit references.",
+                commit: "60183a2",
+                match: "The feedback maps to the provenance correction in this workspace. The historical checkpoints are real; this viewer comment and its match are simulated.",
+                next: "Have reviewers distinguish observed execution, code-supported claims, and simulated feedback, then inspect the evidence for each classification.",
+                signal: "Candidate signal: correct evidence classification and unsupported-claim detection.",
+              },
+            ].map((example) => <article className="claim" key={example.commit}>
+              <div className="row"><h3>{example.title}</h3><span className="pill">Simulated viewer comment</span></div>
+              <blockquote>{example.comment}</blockquote>
+              <p><strong>Matched build checkpoint:</strong> {example.checkpoint}</p>
+              <p><a href={`https://github.com/LEE-CHENYU/winner-signal/commit/${example.commit}`} target="_blank" rel="noreferrer">Inspect actual change · {example.commit} ↗</a></p>
+              <details><summary>Why this match · proposed evaluation</summary>
+                <p>{example.match}</p>
+                <p><strong>Next verification:</strong> {example.next}</p>
+                <p>{example.signal}</p>
+              </details>
+            </article>)}
+            <p className="muted">Illustrative matches only. These examples do not enter feedback totals, audience reports, or training datasets.</p>
+          </section>}
           {project.slug === "winner-signal-19daa4" && <section className="panel" aria-labelledby="build-backtrace-heading">
             <div className="section-heading">
               <div><h2 id="build-backtrace-heading">This demo → our build trajectory</h2><p>Recorded decisions, implementation, failures, and follow-up fixes.</p></div>
