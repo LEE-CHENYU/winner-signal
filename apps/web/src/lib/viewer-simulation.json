@@ -1,5 +1,5 @@
 {
-  "version": "synthetic-viewers-v1",
+  "version": "synthetic-viewers-v2-semantic",
   "synthetic": true,
   "reactions": [
     "Interested",
@@ -51,10 +51,10 @@
   "scenes": [
     {
       "id": "intro",
-      "time": "00:00\u201300:15",
-      "end": 15,
-      "title": "Introduce the project",
-      "content": "A fictional builder shares a demo and repository. \u201cWhat did the agent build, and what evidence supports it?\u201d",
+      "time": "00:00\u201300:10",
+      "end": 10,
+      "title": "Value proposition",
+      "content": "The fictional narrator promises to connect an AI-built artifact to evidence of what works.",
       "reaction_adjustment": [
         0,
         0,
@@ -64,15 +64,21 @@
       "exit_friction": 0,
       "commit": "60183a2",
       "file": "apps/web/src/components/app.tsx",
-      "trajectory": "The actual build replaced a fictional trace example with curated project decisions, failures, tests, and commit references.",
-      "experiment": "Compare a concrete evidence example with an abstract introduction; measure subsequent evidence-location success."
+      "trajectory": "The actual build replaced a fictional trace example with curated decisions, failures, tests, and commit references.",
+      "experiment": "Compare an abstract promise with one concrete evidence chain.",
+      "meanings": [
+        "Relevant to my workflow",
+        "Unclear what is being evaluated",
+        "Claims need evidence",
+        "Not relevant to me"
+      ]
     },
     {
       "id": "connect",
-      "time": "00:15\u201300:30",
-      "end": 30,
-      "title": "Connect the uploader account",
-      "content": "The fictional builder switches from their sign-in account to the account that uploaded the video.",
+      "time": "00:10\u201300:25",
+      "end": 25,
+      "title": "Uploader identity and permissions",
+      "content": "The fictional builder switches to the account that owns the demo video.",
       "reaction_adjustment": [
         -0.1,
         0.1,
@@ -83,14 +89,44 @@
       "commit": "6f8aeb1c2c1d6abd42dabf457c4f7dbdac12fd95",
       "file": "services/analysis/analysis/google_oauth.py",
       "trajectory": "Recorded OAuth failures were followed by a repair and passing tests. The code supports same-account connection and a separate uploader fallback.",
-      "experiment": "Compare a short explanation with a complete account-switch walkthrough; separately test task completion."
+      "experiment": "Compare concise account guidance with a complete switch walkthrough; test ownership-task completion.",
+      "meanings": [
+        "Useful account flexibility",
+        "Which account should I connect?",
+        "Why are these permissions needed?",
+        "Setup is too much effort"
+      ]
+    },
+    {
+      "id": "claim",
+      "time": "00:25\u201300:38",
+      "end": 38,
+      "title": "Video claim extraction",
+      "content": "A fictional review isolates a narrated claim and marks its video timestamp and observation type.",
+      "reaction_adjustment": [
+        0.05,
+        0,
+        -0.05,
+        0
+      ],
+      "exit_friction": 0,
+      "commit": "6f8aeb1c2c1d6abd42dabf457c4f7dbdac12fd95",
+      "file": "services/analysis/analysis/gemini_analyzer.py",
+      "trajectory": "The analyzer classifies visible observations versus narrated assertions and validates video timestamp bounds.",
+      "experiment": "Test whether viewers distinguish a narrated promise from a demonstrated action.",
+      "meanings": [
+        "This makes the claim concrete",
+        "What counts as an observation?",
+        "Did the model invent this claim?",
+        "Too much explanation"
+      ]
     },
     {
       "id": "evidence",
-      "time": "00:30\u201301:00",
-      "end": 60,
-      "title": "Inspect a claim and its agent trace",
-      "content": "A fictional review opens a source citation and an exact quote from the coding-agent history.",
+      "time": "00:38\u201300:53",
+      "end": 53,
+      "title": "Source-code grounding",
+      "content": "The fictional builder opens the claim\u2019s pinned source file and checks the cited lines.",
       "reaction_adjustment": [
         0.05,
         -0.05,
@@ -100,15 +136,45 @@
       "exit_friction": 0,
       "commit": "698857b",
       "file": "services/analysis/analysis/gemini_analyzer.py",
-      "trajectory": "The agent added structured actor/action/outcome findings, exact trace quotations, character offsets, and source validation.",
-      "experiment": "Test whether viewers can locate supporting code and distinguish textual support from verified execution."
+      "trajectory": "The implementation validates source-line ranges and constructs pinned source references; the build also added structured trace findings.",
+      "experiment": "Ask viewers to locate the cited code and explain what it supports without claiming execution.",
+      "meanings": [
+        "The claim is inspectable",
+        "How does this code support it?",
+        "Code existing does not prove it ran",
+        "Code detail is too technical"
+      ]
+    },
+    {
+      "id": "trace",
+      "time": "00:53\u201301:10",
+      "end": 70,
+      "title": "Agent-action attribution",
+      "content": "The fictional review expands an actor/action/outcome finding and its exact history quote.",
+      "reaction_adjustment": [
+        0,
+        0,
+        0.05,
+        -0.05
+      ],
+      "exit_friction": 0.01,
+      "commit": "698857b",
+      "file": "services/analysis/analysis/gemini_analyzer.py",
+      "trajectory": "The agent added actor/action/outcome findings, exact trace-quote validation, character offsets, and supporting code references.",
+      "experiment": "Test whether viewers identify the actual action and separate quoted reports from independently verified outcomes.",
+      "meanings": [
+        "I can inspect the build decision",
+        "Which actor caused the result?",
+        "A reported outcome is not verification",
+        "The history is too detailed"
+      ]
     },
     {
       "id": "recovery",
-      "time": "01:00\u201301:30",
+      "time": "01:10\u201301:30",
       "end": 90,
-      "title": "Recover a failed review",
-      "content": "A fictional format error is followed by a retry and a completed evidence report. This on-screen sequence was not observed.",
+      "title": "Failure recovery and result",
+      "content": "A fictional format error is followed by retry and a completed evidence report; this screen sequence was not observed.",
       "reaction_adjustment": [
         -0.1,
         0.05,
@@ -119,72 +185,102 @@
       "commit": "b53f633",
       "file": "services/analysis/analysis/gemini_analyzer.py",
       "trajectory": "After a recorded JSON parsing failure, the agent bounded output and added diagnostics. A subsequent live run returned five claims and six trace findings with a verified seal.",
-      "experiment": "Compare result-first and recovery-first edits, then measure understanding rather than treating retention as correctness."
+      "experiment": "Compare result-first and recovery-first edits; evaluate comprehension separately from retention.",
+      "meanings": [
+        "The recovery is useful",
+        "What fixed the failure?",
+        "Will this fail again?",
+        "The payoff took too long"
+      ]
     }
   ],
   "runs": [
     {
       "seed": 20261025,
       "n": 1000,
-      "completed": 470,
+      "completed": 349,
       "personas": {
         "Builder": 445,
-        "Casual viewer": 250,
-        "Evaluator": 305
+        "Casual viewer": 274,
+        "Evaluator": 281
       },
       "final_reactions": {
-        "Interested": 297,
-        "Confused": 230,
-        "Skeptical": 211,
-        "Disengaged": 262
+        "Interested": 237,
+        "Confused": 227,
+        "Skeptical": 234,
+        "Disengaged": 302
       },
       "stages": [
         {
           "id": "intro",
           "reached": 1000,
-          "exits": 167,
-          "replays": 169,
+          "exits": 158,
+          "replays": 166,
           "reactions": {
-            "Interested": 489,
-            "Confused": 136,
-            "Skeptical": 194,
-            "Disengaged": 181
+            "Interested": 505,
+            "Confused": 162,
+            "Skeptical": 177,
+            "Disengaged": 156
           }
         },
         {
           "id": "connect",
-          "reached": 833,
-          "exits": 185,
-          "replays": 175,
+          "reached": 842,
+          "exits": 164,
+          "replays": 157,
           "reactions": {
-            "Interested": 314,
-            "Confused": 212,
-            "Skeptical": 180,
-            "Disengaged": 127
+            "Interested": 338,
+            "Confused": 186,
+            "Skeptical": 185,
+            "Disengaged": 133
+          }
+        },
+        {
+          "id": "claim",
+          "reached": 678,
+          "exits": 99,
+          "replays": 106,
+          "reactions": {
+            "Interested": 373,
+            "Confused": 99,
+            "Skeptical": 106,
+            "Disengaged": 100
           }
         },
         {
           "id": "evidence",
-          "reached": 648,
-          "exits": 88,
-          "replays": 111,
+          "reached": 579,
+          "exits": 81,
+          "replays": 76,
           "reactions": {
-            "Interested": 367,
-            "Confused": 65,
-            "Skeptical": 117,
-            "Disengaged": 99
+            "Interested": 309,
+            "Confused": 57,
+            "Skeptical": 123,
+            "Disengaged": 90
+          }
+        },
+        {
+          "id": "trace",
+          "reached": 498,
+          "exits": 66,
+          "replays": 84,
+          "reactions": {
+            "Interested": 251,
+            "Confused": 60,
+            "Skeptical": 139,
+            "Disengaged": 48
           }
         },
         {
           "id": "recovery",
-          "reached": 560,
-          "exits": 90,
-          "replays": 92,
+          "reached": 432,
+          "exits": 83,
+          "replays": 99,
           "reactions": {
-            "Interested": 228,
-            "Confused": 123,
-            "Skeptical": 130,
-            "Disengaged": 79
+            "Interested": 152,
+            "Confused": 97,
+            "Skeptical": 125,
+            "Disengaged": 58
           }
         }
       ],
@@ -207,9 +303,95 @@
               "exit": false
             },
             {
-              "scene": "evidence",
+              "scene": "claim",
               "reaction": "Interested",
               "replay": true,
+              "exit": false
+            },
+            {
+              "scene": "evidence",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "trace",
+              "reaction": "Skeptical",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "recovery",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            }
+          ]
+        },
+        {
+          "id": "sim-20261025-0003",
+          "persona": "Builder",
+          "completed": false,
+          "path": [
+            {
+              "scene": "intro",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "connect",
+              "reaction": "Confused",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "claim",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "evidence",
+              "reaction": "Disengaged",
+              "replay": false,
+              "exit": true
+            }
+          ]
+        },
+        {
+          "id": "sim-20261025-0018",
+          "persona": "Evaluator",
+          "completed": true,
+          "path": [
+            {
+              "scene": "intro",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "connect",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "claim",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "evidence",
+              "reaction": "Skeptical",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "trace",
+              "reaction": "Interested",
+              "replay": false,
               "exit": false
             },
             {
@@ -222,67 +404,41 @@
         },
         {
           "id": "sim-20261025-0006",
-          "persona": "Builder",
+          "persona": "Evaluator",
           "completed": false,
           "path": [
             {
               "scene": "intro",
               "reaction": "Interested",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "connect",
-              "reaction": "Interested",
-              "replay": false,
-              "exit": true
-            }
-          ]
-        },
-        {
-          "id": "sim-20261025-0009",
-          "persona": "Evaluator",
-          "completed": true,
-          "path": [
-            {
-              "scene": "intro",
-              "reaction": "Skeptical",
               "replay": false,
               "exit": false
             },
             {
               "scene": "connect",
               "reaction": "Confused",
-              "replay": true,
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "claim",
+              "reaction": "Interested",
+              "replay": false,
               "exit": false
             },
             {
               "scene": "evidence",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "trace",
               "reaction": "Skeptical",
-              "replay": true,
+              "replay": false,
               "exit": false
             },
             {
               "scene": "recovery",
-              "reaction": "Interested",
-              "replay": false,
-              "exit": false
-            }
-          ]
-        },
-        {
-          "id": "sim-20261025-0004",
-          "persona": "Evaluator",
-          "completed": false,
-          "path": [
-            {
-              "scene": "intro",
-              "reaction": "Interested",
-              "replay": true,
-              "exit": false
-            },
-            {
-              "scene": "connect",
               "reaction": "Disengaged",
               "replay": false,
               "exit": true
@@ -290,13 +446,56 @@
           ]
         },
         {
-          "id": "sim-20261025-0025",
+          "id": "sim-20261025-0002",
           "persona": "Casual viewer",
           "completed": true,
           "path": [
             {
               "scene": "intro",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "connect",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "claim",
               "reaction": "Confused",
+              "replay": true,
+              "exit": false
+            },
+            {
+              "scene": "evidence",
+              "reaction": "Confused",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "trace",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "recovery",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            }
+          ]
+        },
+        {
+          "id": "sim-20261025-0008",
+          "persona": "Casual viewer",
+          "completed": false,
+          "path": [
+            {
+              "scene": "intro",
+              "reaction": "Disengaged",
               "replay": false,
               "exit": false
             },
@@ -307,26 +506,7 @@
               "exit": false
             },
             {
-              "scene": "evidence",
-              "reaction": "Interested",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "recovery",
-              "reaction": "Skeptical",
-              "replay": false,
-              "exit": false
-            }
-          ]
-        },
-        {
-          "id": "sim-20261025-0002",
-          "persona": "Casual viewer",
-          "completed": false,
-          "path": [
-            {
-              "scene": "intro",
+              "scene": "claim",
               "reaction": "Disengaged",
               "replay": false,
               "exit": true
@@ -338,73 +518,140 @@
     {
       "seed": 20261026,
       "n": 1000,
-      "completed": 482,
+      "completed": 368,
       "personas": {
-        "Builder": 435,
-        "Casual viewer": 263,
-        "Evaluator": 302
+        "Builder": 448,
+        "Evaluator": 309,
+        "Casual viewer": 243
       },
       "final_reactions": {
-        "Interested": 307,
-        "Confused": 206,
-        "Skeptical": 240,
-        "Disengaged": 247
+        "Interested": 250,
+        "Confused": 227,
+        "Skeptical": 238,
+        "Disengaged": 285
       },
       "stages": [
         {
           "id": "intro",
           "reached": 1000,
-          "exits": 170,
-          "replays": 151,
+          "exits": 163,
+          "replays": 145,
           "reactions": {
-            "Interested": 461,
-            "Confused": 148,
-            "Skeptical": 238,
-            "Disengaged": 153
+            "Interested": 502,
+            "Confused": 159,
+            "Skeptical": 178,
+            "Disengaged": 161
           }
         },
         {
           "id": "connect",
-          "reached": 830,
-          "exits": 177,
-          "replays": 140,
+          "reached": 837,
+          "exits": 158,
+          "replays": 150,
           "reactions": {
-            "Interested": 311,
-            "Confused": 190,
-            "Skeptical": 191,
-            "Disengaged": 138
+            "Interested": 342,
+            "Confused": 206,
+            "Skeptical": 186,
+            "Disengaged": 103
+          }
+        },
+        {
+          "id": "claim",
+          "reached": 679,
+          "exits": 90,
+          "replays": 98,
+          "reactions": {
+            "Interested": 349,
+            "Confused": 104,
+            "Skeptical": 118,
+            "Disengaged": 108
           }
         },
         {
           "id": "evidence",
-          "reached": 653,
-          "exits": 82,
+          "reached": 589,
+          "exits": 70,
           "replays": 88,
           "reactions": {
-            "Interested": 340,
-            "Confused": 50,
-            "Skeptical": 153,
-            "Disengaged": 110
+            "Interested": 323,
+            "Confused": 55,
+            "Skeptical": 130,
+            "Disengaged": 81
+          }
+        },
+        {
+          "id": "trace",
+          "reached": 519,
+          "exits": 71,
+          "replays": 86,
+          "reactions": {
+            "Interested": 267,
+            "Confused": 70,
+            "Skeptical": 132,
+            "Disengaged": 50
           }
         },
         {
           "id": "recovery",
-          "reached": 571,
-          "exits": 89,
-          "replays": 99,
+          "reached": 448,
+          "exits": 80,
+          "replays": 84,
           "reactions": {
-            "Interested": 244,
-            "Confused": 103,
-            "Skeptical": 146,
-            "Disengaged": 78
+            "Interested": 168,
+            "Confused": 93,
+            "Skeptical": 119,
+            "Disengaged": 68
           }
         }
       ],
       "samples": [
         {
-          "id": "sim-20261026-0001",
+          "id": "sim-20261026-0002",
           "persona": "Builder",
           "completed": true,
+          "path": [
+            {
+              "scene": "intro",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "connect",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "claim",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "evidence",
+              "reaction": "Interested",
+              "replay": true,
+              "exit": false
+            },
+            {
+              "scene": "trace",
+              "reaction": "Skeptical",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "recovery",
+              "reaction": "Confused",
+              "replay": false,
+              "exit": false
+            }
+          ]
+        },
+        {
+          "id": "sim-20261026-0001",
+          "persona": "Builder",
+          "completed": false,
           "path": [
             {
               "scene": "intro",
@@ -419,52 +666,8 @@
               "exit": false
             },
             {
-              "scene": "evidence",
+              "scene": "claim",
               "reaction": "Interested",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "recovery",
-              "reaction": "Interested",
-              "replay": false,
-              "exit": false
-            }
-          ]
-        },
-        {
-          "id": "sim-20261026-0004",
-          "persona": "Builder",
-          "completed": false,
-          "path": [
-            {
-              "scene": "intro",
-              "reaction": "Disengaged",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "connect",
-              "reaction": "Interested",
-              "replay": false,
-              "exit": true
-            }
-          ]
-        },
-        {
-          "id": "sim-20261026-0011",
-          "persona": "Evaluator",
-          "completed": true,
-          "path": [
-            {
-              "scene": "intro",
-              "reaction": "Interested",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "connect",
-              "reaction": "Disengaged",
               "replay": false,
               "exit": false
             },
@@ -475,20 +678,7 @@
               "exit": false
             },
             {
-              "scene": "recovery",
-              "reaction": "Interested",
-              "replay": false,
-              "exit": false
-            }
-          ]
-        },
-        {
-          "id": "sim-20261026-0003",
-          "persona": "Evaluator",
-          "completed": false,
-          "path": [
-            {
-              "scene": "intro",
+              "scene": "trace",
               "reaction": "Skeptical",
               "replay": false,
               "exit": true
@@ -496,8 +686,8 @@
           ]
         },
         {
-          "id": "sim-20261026-0025",
-          "persona": "Casual viewer",
+          "id": "sim-20261026-0003",
+          "persona": "Evaluator",
           "completed": true,
           "path": [
             {
@@ -513,27 +703,101 @@
               "exit": false
             },
             {
+              "scene": "claim",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
               "scene": "evidence",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "trace",
               "reaction": "Disengaged",
               "replay": false,
               "exit": false
             },
             {
               "scene": "recovery",
-              "reaction": "Interested",
-              "replay": true,
+              "reaction": "Skeptical",
+              "replay": false,
               "exit": false
             }
           ]
         },
         {
-          "id": "sim-20261026-0002",
+          "id": "sim-20261026-0007",
+          "persona": "Evaluator",
+          "completed": false,
+          "path": [
+            {
+              "scene": "intro",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "connect",
+              "reaction": "Disengaged",
+              "replay": false,
+              "exit": true
+            }
+          ]
+        },
+        {
+          "id": "sim-20261026-0009",
+          "persona": "Casual viewer",
+          "completed": true,
+          "path": [
+            {
+              "scene": "intro",
+              "reaction": "Confused",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "connect",
+              "reaction": "Disengaged",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "claim",
+              "reaction": "Confused",
+              "replay": true,
+              "exit": false
+            },
+            {
+              "scene": "evidence",
+              "reaction": "Disengaged",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "trace",
+              "reaction": "Confused",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "recovery",
+              "reaction": "Skeptical",
+              "replay": false,
+              "exit": false
+            }
+          ]
+        },
+        {
+          "id": "sim-20261026-0006",
           "persona": "Casual viewer",
           "completed": false,
           "path": [
             {
               "scene": "intro",
-              "reaction": "Disengaged",
+              "reaction": "Confused",
               "replay": false,
               "exit": true
             }
@@ -544,65 +808,89 @@
     {
       "seed": 20261027,
       "n": 1000,
-      "completed": 460,
+      "completed": 350,
       "personas": {
-        "Builder": 429,
-        "Casual viewer": 249,
-        "Evaluator": 322
+        "Builder": 436,
+        "Evaluator": 334,
+        "Casual viewer": 230
       },
       "final_reactions": {
-        "Interested": 292,
-        "Confused": 212,
-        "Skeptical": 218,
-        "Disengaged": 278
+        "Interested": 251,
+        "Confused": 226,
+        "Skeptical": 221,
+        "Disengaged": 302
       },
       "stages": [
         {
           "id": "intro",
           "reached": 1000,
-          "exits": 142,
-          "replays": 146,
+          "exits": 143,
+          "replays": 160,
           "reactions": {
-            "Interested": 495,
-            "Confused": 130,
-            "Skeptical": 215,
-            "Disengaged": 160
+            "Interested": 487,
+            "Confused": 133,
+            "Skeptical": 210,
+            "Disengaged": 170
           }
         },
         {
           "id": "connect",
-          "reached": 858,
-          "exits": 182,
-          "replays": 178,
+          "reached": 857,
+          "exits": 186,
+          "replays": 151,
           "reactions": {
-            "Interested": 328,
-            "Confused": 227,
-            "Skeptical": 178,
-            "Disengaged": 125
+            "Interested": 343,
+            "Confused": 223,
+            "Skeptical": 167,
+            "Disengaged": 124
           }
         },
         {
-          "id": "evidence",
-          "reached": 676,
-          "exits": 90,
-          "replays": 115,
+          "id": "claim",
+          "reached": 671,
+          "exits": 104,
+          "replays": 99,
           "reactions": {
-            "Interested": 356,
-            "Confused": 75,
-            "Skeptical": 151,
+            "Interested": 355,
+            "Confused": 101,
+            "Skeptical": 121,
             "Disengaged": 94
           }
         },
         {
-          "id": "recovery",
-          "reached": 586,
-          "exits": 126,
-          "replays": 106,
+          "id": "evidence",
+          "reached": 567,
+          "exits": 87,
+          "replays": 94,
           "reactions": {
-            "Interested": 233,
-            "Confused": 122,
-            "Skeptical": 143,
-            "Disengaged": 88
+            "Interested": 328,
+            "Confused": 54,
+            "Skeptical": 114,
+            "Disengaged": 71
+          }
+        },
+        {
+          "id": "trace",
+          "reached": 480,
+          "exits": 58,
+          "replays": 105,
+          "reactions": {
+            "Interested": 259,
+            "Confused": 69,
+            "Skeptical": 106,
+            "Disengaged": 46
+          }
+        },
+        {
+          "id": "recovery",
+          "reached": 422,
+          "exits": 72,
+          "replays": 67,
+          "reactions": {
+            "Interested": 174,
+            "Confused": 82,
+            "Skeptical": 109,
+            "Disengaged": 57
           }
         }
       ],
@@ -625,8 +913,20 @@
               "exit": false
             },
             {
-              "scene": "evidence",
+              "scene": "claim",
               "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "evidence",
+              "reaction": "Confused",
+              "replay": true,
+              "exit": false
+            },
+            {
+              "scene": "trace",
+              "reaction": "Skeptical",
               "replay": false,
               "exit": false
             },
@@ -634,13 +934,81 @@
               "scene": "recovery",
               "reaction": "Skeptical",
               "replay": false,
+              "exit": false
+            }
+          ]
+        },
+        {
+          "id": "sim-20261027-0002",
+          "persona": "Builder",
+          "completed": false,
+          "path": [
+            {
+              "scene": "intro",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "connect",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "claim",
+              "reaction": "Disengaged",
+              "replay": false,
+              "exit": true
+            }
+          ]
+        },
+        {
+          "id": "sim-20261027-0003",
+          "persona": "Evaluator",
+          "completed": true,
+          "path": [
+            {
+              "scene": "intro",
+              "reaction": "Skeptical",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "connect",
+              "reaction": "Confused",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "claim",
+              "reaction": "Skeptical",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "evidence",
+              "reaction": "Skeptical",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "trace",
+              "reaction": "Skeptical",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "recovery",
+              "reaction": "Confused",
+              "replay": true,
               "exit": false
             }
           ]
         },
         {
           "id": "sim-20261027-0005",
-          "persona": "Builder",
+          "persona": "Evaluator",
           "completed": false,
           "path": [
             {
@@ -651,27 +1019,70 @@
             },
             {
               "scene": "connect",
+              "reaction": "Confused",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "claim",
+              "reaction": "Disengaged",
+              "replay": false,
+              "exit": true
+            }
+          ]
+        },
+        {
+          "id": "sim-20261027-0046",
+          "persona": "Casual viewer",
+          "completed": true,
+          "path": [
+            {
+              "scene": "intro",
+              "reaction": "Confused",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "connect",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "claim",
               "reaction": "Interested",
               "replay": false,
               "exit": false
             },
             {
               "scene": "evidence",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "trace",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            },
+            {
+              "scene": "recovery",
+              "reaction": "Interested",
+              "replay": false,
+              "exit": false
+            }
+          ]
+        },
+        {
+          "id": "sim-20261027-0008",
+          "persona": "Casual viewer",
+          "completed": false,
+          "path": [
+            {
+              "scene": "intro",
               "reaction": "Interested",
               "replay": true,
-              "exit": true
-            }
-          ]
-        },
-        {
-          "id": "sim-20261027-0007",
-          "persona": "Evaluator",
-          "completed": true,
-          "path": [
-            {
-              "scene": "intro",
-              "reaction": "Disengaged",
-              "replay": false,
               "exit": false
             },
             {
@@ -681,100 +1092,7 @@
               "exit": false
             },
             {
-              "scene": "evidence",
-              "reaction": "Skeptical",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "recovery",
-              "reaction": "Interested",
-              "replay": false,
-              "exit": false
-            }
-          ]
-        },
-        {
-          "id": "sim-20261027-0004",
-          "persona": "Evaluator",
-          "completed": false,
-          "path": [
-            {
-              "scene": "intro",
-              "reaction": "Skeptical",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "connect",
-              "reaction": "Interested",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "evidence",
-              "reaction": "Interested",
-              "replay": false,
-              "exit": true
-            }
-          ]
-        },
-        {
-          "id": "sim-20261027-0002",
-          "persona": "Casual viewer",
-          "completed": true,
-          "path": [
-            {
-              "scene": "intro",
-              "reaction": "Disengaged",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "connect",
-              "reaction": "Confused",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "evidence",
-              "reaction": "Interested",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "recovery",
-              "reaction": "Interested",
-              "replay": false,
-              "exit": false
-            }
-          ]
-        },
-        {
-          "id": "sim-20261027-0003",
-          "persona": "Casual viewer",
-          "completed": false,
-          "path": [
-            {
-              "scene": "intro",
-              "reaction": "Interested",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "connect",
-              "reaction": "Skeptical",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "evidence",
-              "reaction": "Skeptical",
-              "replay": false,
-              "exit": false
-            },
-            {
-              "scene": "recovery",
+              "scene": "claim",
               "reaction": "Disengaged",
               "replay": false,
               "exit": true
@@ -784,16 +1102,126 @@
       ]
     }
   ],
+  "section_ranges": {
+    "intro": {
+      "Interested": {
+        "p10": 46.0,
+        "p90": 50.0
+      },
+      "Confused": {
+        "p10": 13.3,
+        "p90": 16.2
+      },
+      "Skeptical": {
+        "p10": 19.4,
+        "p90": 22.5
+      },
+      "Disengaged": {
+        "p10": 15.0,
+        "p90": 17.9
+      }
+    },
+    "connect": {
+      "Interested": {
+        "p10": 36.1,
+        "p90": 41.1
+      },
+      "Confused": {
+        "p10": 22.8,
+        "p90": 26.0
+      },
+      "Skeptical": {
+        "p10": 19.3,
+        "p90": 23.2
+      },
+      "Disengaged": {
+        "p10": 13.7,
+        "p90": 17.5
+      }
+    },
+    "claim": {
+      "Interested": {
+        "p10": 52.0,
+        "p90": 56.6
+      },
+      "Confused": {
+        "p10": 12.8,
+        "p90": 15.6
+      },
+      "Skeptical": {
+        "p10": 14.5,
+        "p90": 17.6
+      },
+      "Disengaged": {
+        "p10": 13.0,
+        "p90": 17.2
+      }
+    },
+    "evidence": {
+      "Interested": {
+        "p10": 52.5,
+        "p90": 57.6
+      },
+      "Confused": {
+        "p10": 7.6,
+        "p90": 10.4
+      },
+      "Skeptical": {
+        "p10": 19.3,
+        "p90": 24.5
+      },
+      "Disengaged": {
+        "p10": 12.2,
+        "p90": 16.3
+      }
+    },
+    "trace": {
+      "Interested": {
+        "p10": 47.2,
+        "p90": 53.0
+      },
+      "Confused": {
+        "p10": 12.0,
+        "p90": 15.8
+      },
+      "Skeptical": {
+        "p10": 24.2,
+        "p90": 29.4
+      },
+      "Disengaged": {
+        "p10": 7.1,
+        "p90": 11.0
+      }
+    },
+    "recovery": {
+      "Interested": {
+        "p10": 37.2,
+        "p90": 43.6
+      },
+      "Confused": {
+        "p10": 16.8,
+        "p90": 21.1
+      },
+      "Skeptical": {
+        "p10": 23.0,
+        "p90": 28.9
+      },
+      "Disengaged": {
+        "p10": 11.7,
+        "p90": 15.4
+      }
+    }
+  },
   "distribution_check": {
     "runs": 100,
     "viewers_per_run": 1000,
     "seed_start": 20261025,
     "completion_percent": {
-      "min": 42.9,
-      "p10": 45.0,
-      "median": 47.199999999999996,
-      "p90": 48.9,
-      "max": 51.5
+      "min": 31.1,
+      "p10": 33.0,
+      "median": 34.9,
+      "p90": 36.7,
+      "max": 39.4
     },
     "checks": [
       "Seed reproducibility",
