@@ -971,50 +971,50 @@ function DashboardBody({ id }: { id: string }) {
           </div>
           {project.slug === "winner-signal-19daa4" && <section className="panel" aria-labelledby="feedback-trace-heading">
             <div className="section-heading">
-              <div><h2 id="feedback-trace-heading">Feedback → agent trajectory</h2><p>Explore how a viewer’s experience could guide the next build.</p></div>
-              <span className="pill">Simulated feedback · demo only</span>
+              <div><h2 id="feedback-trace-heading">Code evidence → agent trajectory</h2><p>Derive evaluation signals from what the coding agent actually changed.</p></div>
+              <span className="pill">Code-grounded · curated</span>
             </div>
-            <p className="notice">These comments are invented examples, not collected user feedback or YouTube data. Matches below are manually curated against our actual build history; they do not establish causal attribution or measured training gains.</p>
+            <p className="notice">These findings use source changes and recorded coding history only. They are curated examples, not an automatic analysis of every project. No user comments, audience response, or satisfaction scores are inferred.</p>
             {[
               {
-                title: "Make the evidence inspectable",
-                comment: "I can see the demo, but I want to know which agent action produced the result and inspect the original evidence.",
-                checkpoint: "23:32 UTC · History was only background context. The agent added structured actor/action/outcome findings and exact trace quotations.",
+                title: "Trace quotations are checked against their source",
+                evidence: "The validator drops a trace finding when its artifact is absent or its quote is not present in the supplied text. Supported quotations receive character offsets.",
+                action: "The agent changed history ingestion from background context into structured actor/action/outcome findings with exact quotations.",
                 commit: "698857b",
-                match: "The request concerns action-level provenance, the same gap addressed by the structured trace findings. This is a thematic match, not proof that a viewer used the feature.",
-                next: "Ask a reviewer to locate the original quote and relevant code for one finding. Record whether they succeed and where they get stuck.",
-                signal: "Candidate signal: evidence-location success and time, measured in a future user task.",
+                file: "services/analysis/analysis/gemini_analyzer.py",
+                test: "services/analysis/tests/test_trace_review.py",
+                signal: "Candidate coding signal: unsupported trace claims rejected while supported claims retain inspectable provenance.",
+                limit: "An exact quote establishes textual support. It does not independently verify that the quoted action occurred.",
               },
               {
-                title: "A review needs to finish reliably",
-                comment: "I would use this to review my project, but a failed review leaves me without anything actionable.",
-                checkpoint: "23:35 UTC · The first combined live review failed JSON parsing. The agent bounded response size and improved failure diagnostics; the next run returned five video claims and six trace findings with a verified seal.",
+                title: "A parsing failure led to bounded review output",
+                evidence: "The review schema limits trace findings to six; the prompt requests concise JSON with bounded claims and quotations. Failure diagnostics were added around provider output.",
+                action: "After a combined live review failed JSON parsing, the agent tightened response size. The recorded follow-up run returned five claims, six trace findings, and a verified seal.",
                 commit: "b53f633",
-                match: "The comment describes review reliability. The recorded failure and repair provide a concrete trajectory to inspect, but one successful rerun does not establish a general success rate.",
-                next: "Replay a fixed set of consented video/code/history inputs. Compare valid, source-grounded review completion before and after the fix.",
-                signal: "Candidate signal: usable review completion with valid citations, not merely HTTP success.",
+                file: "services/analysis/analysis/gemini_analyzer.py",
+                test: "services/analysis/tests/test_linked_review.py",
+                signal: "Candidate coding signal: failure diagnosis → targeted repair → valid review artifact on the recorded rerun.",
+                limit: "This is one recorded recovery, not a general reliability estimate. Repeated held-out runs are needed to measure improvement.",
               },
               {
-                title: "Keep real build history separate from illustration",
-                comment: "The backtrace is useful only if I can tell what really happened during the build and what is just an example.",
-                checkpoint: "Actual build correction · The agent replaced the fictional trace example with curated project decisions, failures, tests, and commit references.",
-                commit: "60183a2",
-                match: "The feedback maps to the provenance correction in this workspace. The historical checkpoints are real; this viewer comment and its match are simulated.",
-                next: "Have reviewers distinguish observed execution, code-supported claims, and simulated feedback, then inspect the evidence for each classification.",
-                signal: "Candidate signal: correct evidence classification and unsupported-claim detection.",
+                title: "Repository coverage was made explicit",
+                evidence: "The repository snapshot records bounded source coverage, with dedicated tests for the coverage behavior. Review findings remain limited to the supplied files.",
+                action: "The same trace-grounding change updated repository intake and added coverage tests, making the scope of available code evidence inspectable.",
+                commit: "698857b",
+                file: "services/analysis/analysis/repository.py",
+                test: "services/analysis/tests/test_repository_coverage.py",
+                signal: "Candidate coding signal: review scope is tied to the captured repository evidence rather than assumed complete.",
+                limit: "A bounded snapshot cannot establish correctness of omitted files or deployed behavior. Tests must be executed to establish their result.",
               },
-            ].map((example) => <article className="claim" key={example.commit}>
-              <div className="row"><h3>{example.title}</h3><span className="pill">Simulated viewer comment</span></div>
-              <blockquote>{example.comment}</blockquote>
-              <p><strong>Matched build checkpoint:</strong> {example.checkpoint}</p>
-              <p><a href={`https://github.com/LEE-CHENYU/winner-signal/commit/${example.commit}`} target="_blank" rel="noreferrer">Inspect actual change · {example.commit} ↗</a></p>
-              <details><summary>Why this match · proposed evaluation</summary>
-                <p>{example.match}</p>
-                <p><strong>Next verification:</strong> {example.next}</p>
-                <p>{example.signal}</p>
-              </details>
+            ].map((finding) => <article className="claim" key={finding.title}>
+              <div className="row"><h3>{finding.title}</h3><span className="pill">Source-supported finding</span></div>
+              <p><strong>Code evidence:</strong> {finding.evidence}</p>
+              <p><strong>Matched agent action:</strong> {finding.action}</p>
+              <p><a href={`https://github.com/LEE-CHENYU/winner-signal/blob/${finding.commit}/${finding.file}`} target="_blank" rel="noreferrer">Inspect pinned code ↗</a> · <a href={`https://github.com/LEE-CHENYU/winner-signal/commit/${finding.commit}`} target="_blank" rel="noreferrer">Agent change · {finding.commit} ↗</a> · <a href={`https://github.com/LEE-CHENYU/winner-signal/blob/${finding.commit}/${finding.test}`} target="_blank" rel="noreferrer">Related tests ↗</a></p>
+              <p><strong>{finding.signal}</strong></p>
+              <details><summary>Evidence boundary</summary><p>{finding.limit}</p></details>
             </article>)}
-            <p className="muted">Illustrative matches only. These examples do not enter feedback totals, audience reports, or training datasets.</p>
+            <p className="muted">Candidate evaluation signals only; no numerical agent score or demonstrated training gain is assigned.</p>
           </section>}
           {project.slug === "winner-signal-19daa4" && <section className="panel" aria-labelledby="build-backtrace-heading">
             <div className="section-heading">
